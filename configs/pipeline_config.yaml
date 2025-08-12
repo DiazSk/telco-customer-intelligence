@@ -1,0 +1,37 @@
+# Pipeline Configuration
+pipeline:
+  name: "telco_churn_pipeline"
+  version: "1.0.0"
+  description: "ETL pipeline for telco customer churn data"
+  
+data:
+  raw_data_path: "data/raw/Telco_Customer_Churn.csv"
+  processed_data_path: "data/processed/processed_telco_data.csv"
+  feature_store_path: "data/features/feature_store.parquet"
+  
+quality_checks:
+  enable: true
+  missing_threshold: 0.1
+  outlier_detection: true
+  duplicate_check: true
+  
+schema:
+  numeric_columns:
+    - "tenure"
+    - "MonthlyCharges"
+    - "TotalCharges"
+    - "SeniorCitizen"
+  categorical_columns:
+    - "gender"
+    - "Partner"
+    # ... etc
+  target_column: "Churn"
+  id_column: "customerID"
+
+# Database configuration 
+database:
+  enabled: false
+  
+logging:
+  level: "INFO"
+  file: "logs/pipeline.log"
