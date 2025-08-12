@@ -242,10 +242,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-- **Author**: Your Name
-- **Email**: your.email@example.com
-- **LinkedIn**: [Your Profile](https://linkedin.com/in/yourprofile)
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Author**: Zaid Shaikh
+- **Email**: zaid07sk@gmail.com
+- **LinkedIn**: [Your Profile](https://linkedin.com/in/zaidshaikhdeveloper)
+- **GitHub**: [@yourusername](https://github.com/DiazSk)
 
 ---
 ⭐ **If you find this project helpful, please consider giving it a star!**
