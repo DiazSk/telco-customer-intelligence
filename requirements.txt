@@ -1,0 +1,59 @@
+# Core Data Science Libraries
+pandas==2.0.3
+numpy==1.24.3
+scikit-learn==1.3.0
+xgboost==1.7.6
+lightgbm==4.0.0
+
+# Data Pipeline & ETL
+apache-airflow==2.7.1
+dvc==3.20.0
+great-expectations==0.17.12
+
+# Database
+psycopg2-binary==2.9.6
+sqlalchemy==2.0.19
+redis==4.6.0
+
+# API Development
+fastapi==0.101.0
+uvicorn==0.23.2
+pydantic==2.1.1
+python-multipart==0.0.6
+
+# ML Tracking & Deployment
+mlflow==2.5.0
+shap==0.42.1
+lime==0.2.0.1
+
+# Visualization
+matplotlib==3.7.2
+seaborn==0.12.2
+plotly==5.15.0
+streamlit==1.25.0
+
+# Utilities
+python-dotenv==1.0.0
+pyyaml==6.0.1
+click==8.1.6
+tqdm==4.65.0
+joblib==1.3.1
+
+# Data Validation
+pydantic==2.1.1
+marshmallow==3.20.1
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Logging & Monitoring
+loguru==0.7.0
+prometheus-client==0.17.1
+
+# Development Tools
+black==23.7.0
+flake8==6.0.0
+isort==5.12.0
+mypy==1.4.1
+pre-commit==3.3.3
