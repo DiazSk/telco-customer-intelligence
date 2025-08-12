@@ -1,0 +1,121 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data - but keep directory structure
+data/raw/*
+data/processed/*
+data/features/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/features/.gitkeep
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Model artifacts
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+*.model
+
+# Logs
+logs/
+*.log
+
+# Docker
+.dockerignore
+
+# Airflow
+airflow.db
+airflow-webserver.pid
+airflow.cfg
+
+# DVC
+.dvc/cache
+.dvcignore
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Credentials (never commit these!)
+credentials/
+secrets/
+*.pem
+*.key
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
