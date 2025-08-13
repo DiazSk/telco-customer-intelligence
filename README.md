@@ -142,14 +142,18 @@ telco-customer-intelligence/
 - ✅ Model monitoring and drift detection
 - ✅ Interactive Streamlit dashboard
 
-## 📈 Model Performance
+## 🎯 Model Performance
 
-| Model | AUC-ROC | Precision | Recall | F1-Score |
-|-------|---------|-----------|--------|----------|
-| Baseline (Logistic) | 0.78 | 0.72 | 0.65 | 0.68 |
-| Random Forest | 0.82 | 0.76 | 0.71 | 0.73 |
-| XGBoost | 0.85 | 0.79 | 0.74 | 0.76 |
-| **Ensemble (Production)** | **0.87** | **0.81** | **0.77** | **0.79** |
+Our production model achieves:
+- **83% AUC-ROC** on holdout test set
+- **$105,589** annual savings
+- **3.4x ROI** on retention campaigns
+- **41% precision** at optimal threshold
+
+### Iterative Improvement Process
+1. Initial model: Identified that blanket campaigns lose money
+2. Optimization: Reduced costs by 50%, improved targeting
+3. Result: Transformed negative ROI into profitable strategy
 
 ## 🔧 API Endpoints
 
