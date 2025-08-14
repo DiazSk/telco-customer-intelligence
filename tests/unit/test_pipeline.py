@@ -6,7 +6,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data_pipeline.pipeline import DataProcessor, DataQualityChecker, TelcoChurnPipeline
+from src.data_pipeline.pipeline import (
+    DataProcessor,
+    DataQualityChecker,
+    TelcoChurnPipeline,
+)
 
 
 @pytest.fixture
@@ -28,7 +32,13 @@ def sample_data():
         "TechSupport": ["No", "Yes", "No", "Yes", "No internet service"],
         "StreamingTV": ["Yes", "No", "Yes", "No", "No internet service"],
         "StreamingMovies": ["No", "Yes", "No", "Yes", "No internet service"],
-        "Contract": ["Month-to-month", "One year", "Two year", "Month-to-month", "Two year"],
+        "Contract": [
+            "Month-to-month",
+            "One year",
+            "Two year",
+            "Month-to-month",
+            "Two year",
+        ],
         "PaperlessBilling": ["Yes", "No", "Yes", "No", "Yes"],
         "PaymentMethod": [
             "Electronic check",
@@ -50,7 +60,12 @@ def config():
     return {
         "schema": {
             "id_column": "customerID",
-            "numeric_columns": ["tenure", "MonthlyCharges", "TotalCharges", "SeniorCitizen"],
+            "numeric_columns": [
+                "tenure",
+                "MonthlyCharges",
+                "TotalCharges",
+                "SeniorCitizen",
+            ],
             "categorical_columns": ["gender", "Partner", "Dependents", "Contract"],
             "target_column": "Churn",
         },
