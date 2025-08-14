@@ -10,6 +10,8 @@
 An end-to-end machine learning platform for predicting customer churn in telecommunications, featuring automated data pipelines, advanced ML models, and real-time prediction APIs. This solution demonstrates production-ready ML engineering practices with potential to **save $2.5M annually** through targeted retention strategies.
 
 ### 🎯 Key Business Metrics
+
+
 - **Churn Prediction Accuracy**: 85%+ AUC-ROC
 - **False Negative Reduction**: 30% improvement
 - **High-Risk Customer Identification**: Top 20% accounts for 60% of churn
@@ -31,7 +33,9 @@ graph LR
 
 ## 🚀 Quick Start
 
+
 ### Prerequisites
+
 - Python 3.9+
 - Docker & Docker Compose
 - PostgreSQL (optional, can use SQLite for development)
@@ -39,46 +43,62 @@ graph LR
 
 ### Installation
 
+
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/yourusername/telco-customer-intelligence.git
 cd telco-customer-intelligence
+
 ```
 
 2. **Set up virtual environment**
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 pip install -r requirements.txt
 ```
 
 3. **Set up environment variables**
+
 ```bash
+
 cp .env.example .env
 # Edit .env with your configurations
 ```
 
 4. **Initialize the database**
+
+
 ```bash
 python scripts/init_db.py
 ```
 
+
 5. **Run the data pipeline**
+
 ```bash
 python src/data_pipeline/run_pipeline.py --config configs/pipeline_config.yaml
 ```
 
+
 6. **Train the model**
+
 ```bash
 python src/models/train.py --experiment-name baseline
+
 ```
 
 7. **Start the API**
+
 ```bash
 uvicorn src.api.main:app --reload --port 8000
 ```
 
 8. **Launch the dashboard**
+
 ```bash
 streamlit run src/dashboard/app.py
 ```
@@ -112,6 +132,7 @@ telco-customer-intelligence/
 │   ├── 01_eda.ipynb          # Exploratory Data Analysis
 │   ├── 02_feature_engineering.ipynb
 │   ├── 03_modeling.ipynb
+
 │   └── 04_business_analysis.ipynb
 ├── tests/                     # Test suite
 ├── deployment/                # Deployment configurations
@@ -119,25 +140,32 @@ telco-customer-intelligence/
 └── configs/                   # Configuration files
 ```
 
+
 ## 🔬 Features
 
 ### Data Pipeline
+
 - ✅ Automated ETL with Apache Airflow
 - ✅ Data quality validation with Great Expectations
+
 - ✅ Data versioning with DVC
 - ✅ Feature store for consistent feature management
 
 ### Machine Learning
+
 - ✅ Multiple model architectures (XGBoost, LightGBM, Neural Networks)
 - ✅ Hyperparameter optimization with Optuna
 - ✅ Model interpretability with SHAP
 - ✅ Survival analysis for time-to-churn predictions
 - ✅ Cost-sensitive learning for business optimization
 
+
 ### Production Features
+
 - ✅ REST API with FastAPI
 - ✅ Real-time prediction endpoint
 - ✅ Batch prediction support
+
 - ✅ A/B testing framework
 - ✅ Model monitoring and drift detection
 - ✅ Interactive Streamlit dashboard
@@ -145,12 +173,14 @@ telco-customer-intelligence/
 ## 🎯 Model Performance
 
 Our production model achieves:
+
 - **83% AUC-ROC** on holdout test set
 - **$105,589** annual savings
 - **3.4x ROI** on retention campaigns
 - **41% precision** at optimal threshold
 
 ### Iterative Improvement Process
+
 1. Initial model: Identified that blanket campaigns lose money
 2. Optimization: Reduced costs by 50%, improved targeting
 3. Result: Transformed negative ROI into profitable strategy
@@ -188,11 +218,13 @@ print(response.json())
 
 ## 🧪 Testing
 
+
 ```bash
 # Run all tests
 pytest
 
 # Run with coverage
+
 pytest --cov=src tests/
 
 # Run specific test suite
@@ -203,11 +235,13 @@ pytest tests/integration/
 ## 📊 Business Impact Analysis
 
 ### Customer Segmentation
+
 - **High Risk**: 20% of customers, 73% churn probability
-- **Medium Risk**: 30% of customers, 35% churn probability  
+- **Medium Risk**: 30% of customers, 35% churn probability
 - **Low Risk**: 50% of customers, 8% churn probability
 
 ### Retention Strategy ROI
+
 - Average Customer Lifetime Value: $1,350
 - Retention Campaign Cost: $50 per customer
 - Success Rate: 40% churn prevention
@@ -230,7 +264,7 @@ pytest tests/integration/
 - [ ] Phase 6: AutoML Integration
 - [ ] Phase 7: Real-time Streaming Pipeline
 
-## 🤝 Contributing
+## 🤝 Contrib<zaid07sk@gmail.com>
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
@@ -247,7 +281,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 - **Author**: Zaid Shaikh
-- **Email**: zaid07sk@gmail.com
+- **Email**: <zaid07sk@gmail.com>
 - **LinkedIn**: [Your Profile](https://linkedin.com/in/zaidshaikhdeveloper)
 - **GitHub**: [@yourusername](https://github.com/DiazSk)
 
