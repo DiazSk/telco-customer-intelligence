@@ -35,16 +35,16 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Run black
-        run: black --check src/ tests/
+        run: python -m black --check src/ tests/
 
       - name: Run isort
-        run: isort --check-only src/ tests/
+        run: python -m isort --check-only src/ tests/
 
       - name: Run flake8
-        run: flake8 src/ tests/ --max-line-length=100 --ignore=E203,W503
+        run: python -m flake8 src/ tests/ --max-line-length=100 --ignore=E203,W503
 
       - name: Run mypy
-        run: mypy src/ --ignore-missing-imports
+        run: python -m mypy src/ --ignore-missing-imports
 
   # Testing
   test:
