@@ -1,0 +1,115 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USER:-telco_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-telco_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U telco_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Data Pipeline
+  pipeline:
+    build: .
+    command: python src/data_pipeline/pipeline.py
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./configs:/app/configs
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - postgres
+      - redis
+
+  # FastAPI Application
+  api:
+    build: .
+    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=postgresql://telco_user:telco_pass@postgres:5432/telco_db
+      - REDIS_URL=redis://redis:6379
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Streamlit Dashboard
+  dashboard:
+    build: .
+    command: streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - api
+
+  # MLflow Tracking Server
+  mlflow:
+    build: .
+    command: mlflow server --backend-store-uri postgresql://telco_user:telco_pass@postgres:5432/telco_db --default-artifact-root /app/mlruns --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
+    environment:
+      - BACKEND_STORE_URI=postgresql://telco_user:telco_pass@postgres:5432/telco_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Jupyter Notebook (for development)
+  notebook:
+    build: .
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data
+      - ./src:/app/src
+    environment:
+      - PYTHONUNBUFFERED=1
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: telco-network
