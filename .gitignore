@@ -110,11 +110,38 @@ tmp/
 *.sqlite
 *.sqlite3
 
+# Data files (actual data, keep structure)
+data/telco.db
+data/features/*.parquet
+data/processed/*.xlsx
+data/processed/quality_report.yaml
+
 # Credentials (never commit these!)
 credentials/
 secrets/
 *.pem
 *.key
+*.p12
+*.pfx
+
+# Environment files with secrets
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Docker override files (may contain secrets)
+docker-compose.override.yml
+docker-compose.prod.yml
+docker-compose.local.yml
+
+# MLflow authentication
+.mlflow/
+mlflow.db
+
+# Jupyter notebook tokens/configs
+.jupyter/
+jupyter_notebook_config.py
 
 # Mac
 .DS_Store
@@ -126,3 +153,6 @@ ehthumbs.db
 # Config with secrets
 *_secret.yaml
 *_prod.yaml
+
+# Pre-commit cache
+.pre-commit-config.yaml.backup
