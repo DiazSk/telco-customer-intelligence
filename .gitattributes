@@ -12,10 +12,12 @@
 *.json    text eol=lf
 *.toml    text eol=lf
 *.sql     text eol=lf
+*.txt     text eol=lf
 *.sh      text eol=lf
 *.ps1     text eol=lf
 Dockerfile text eol=lf
 Makefile  text eol=lf
+LICENSE   text eol=lf
 
 # Treat common binary formats as binary (no EOL normalization)
 *.png binary
