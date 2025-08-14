@@ -1,0 +1,26 @@
+# Ensure consistent line endings across platforms
+
+# Automatically detect text files and normalize to LF in the repo
+* text=auto
+
+# Force LF line endings for source and config files
+*.py      text eol=lf
+*.ipynb   text eol=lf
+*.md      text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.json    text eol=lf
+*.toml    text eol=lf
+*.sql     text eol=lf
+*.sh      text eol=lf
+*.ps1     text eol=lf
+Dockerfile text eol=lf
+Makefile  text eol=lf
+
+# Treat common binary formats as binary (no EOL normalization)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
