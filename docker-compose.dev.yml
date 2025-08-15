@@ -1,0 +1,97 @@
+# Docker Compose configuration for development - simplified version
+# Use: docker compose -f docker-compose.dev.yml up
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USER:-telco_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-telco_pass}
+      POSTGRES_DB: ${DB_NAME:-telco_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U telco_user -d telco_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # FastAPI Application (simplified - using pre-built Python image)
+  api:
+    image: python:3.11-slim
+    working_dir: /app
+    command: >
+      bash -c "
+        apt-get update && apt-get install -y gcc curl && 
+        pip install fastapi uvicorn sqlalchemy psycopg2-binary redis python-dotenv &&
+        uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./docs:/app/docs
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER:-telco_user}:${DB_PASSWORD:-telco_pass}@postgres:5432/${DB_NAME:-telco_db}
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Simple Dashboard (using Streamlit directly)
+  dashboard:
+    image: python:3.11-slim
+    working_dir: /app
+    command: >
+      bash -c "
+        apt-get update && apt-get install -y gcc curl && 
+        pip install streamlit pandas plotly &&
+        streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+      "
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./docs:/app/docs
+      - ./models:/app/models
+    environment:
+      - API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: telco-network
