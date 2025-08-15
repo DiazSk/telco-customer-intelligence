@@ -50,7 +50,7 @@ jobs:
 
       - name: Run mypy (lenient)
         run: |
-          python -m mypy src/ --ignore-missing-imports --allow-untyped-defs --no-strict-optional --disable-error-code=union-attr,index,assignment || echo "MyPy issues found but continuing"
+          python -m mypy src/ --ignore-missing-imports --allow-untyped-defs --no-strict-optional || echo "MyPy issues found but continuing"
 
   # Testing
   test:
