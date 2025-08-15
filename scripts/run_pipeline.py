@@ -75,7 +75,7 @@ def main():
         ]
         for feature in new_feature_cols:
             if feature in df_processed.columns:
-                logger.info(f"  ✓ {feature}")
+                logger.info(f"  {feature}")
 
         # Sample of processed data
         logger.info("\nSample of processed data (first 3 rows):")
@@ -94,9 +94,9 @@ def main():
 
         # Data quality summary
         logger.info("\nData Quality Summary:")
-        logger.info("  - Missing values handled: ✓")
-        logger.info("  - Duplicates removed: ✓")
-        logger.info("  - Features engineered: ✓")
+        logger.info("  - Missing values handled: Yes")
+        logger.info("  - Duplicates removed: Yes")
+        logger.info("  - Features engineered: Yes")
         logger.info("  - Data saved to: data/processed/")
 
         # Next steps
@@ -109,7 +109,7 @@ def main():
         logger.info("4. Start the API: uvicorn src.api.main:app --reload")
         logger.info("5. Launch dashboard: streamlit run src/dashboard/app.py")
 
-        logger.info("\n✅ Pipeline completed successfully!")
+        logger.info("\nPipeline completed successfully!")
 
     except Exception as e:
         logger.error(f"Pipeline failed: {str(e)}")

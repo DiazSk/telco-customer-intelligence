@@ -14,16 +14,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
-# Fast imports only - heavy imports moved to functions
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-# Add project root to path
+# Add project root to path for local imports
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-# Import schemas
-from src.api.schemas.models import (
+# Local imports after path setup
+from src.api.schemas.models import (  # noqa: E402
     BatchPredictionRequest,
     BatchPredictionResponse,
     ChurnPredictionResponse,
@@ -349,7 +348,7 @@ async def predict_batch(request: BatchPredictionRequest):
 
     start_time = time.time()
     predictions = []
-    total_value_at_risk = 0
+    total_value_at_risk = 0.0
     high_risk_count = 0
 
     try:
@@ -480,7 +479,7 @@ async def reload_model():
 
             # Re-optimize caches
             global FEATURE_COLUMNS_INDICES, NUMPY_FEATURE_TEMPLATE
-            FEATURE_COLUMNS_INDICES.clear()
+            FEATURE_COLUMNS_INDICES = {}  # Reset the dictionary
             for i, col in enumerate(MODEL_ARTIFACTS["feature_columns"]):
                 FEATURE_COLUMNS_INDICES[col] = i
             NUMPY_FEATURE_TEMPLATE = np.zeros((1, len(MODEL_ARTIFACTS["feature_columns"])))

@@ -302,15 +302,15 @@ class APITester:
 
         # Check if average response time is under 100ms
         if avg_time < 0.1:
-            print("  ✅ Performance target met (<100ms)")
+            print("  Performance target met (<100ms)")
         else:
-            print("  ⚠️ Performance below target (>100ms)")
+            print("  Performance below target (>100ms)")
 
         return True
 
     def run_all_tests(self):
         """Run all API tests."""
-        print("\n" + "🚀 Starting API Tests " + "=" * 35)
+        print("\n" + "Starting API Tests " + "=" * 35)
 
         tests = [
             ("Health Check", self.test_health_check),
@@ -329,7 +329,7 @@ class APITester:
                 results.append((test_name, success))
                 time.sleep(0.5)  # Small delay between tests
             except Exception as e:
-                print(f"\n❌ Test '{test_name}' failed with error: {str(e)}")
+                print(f"\nTest '{test_name}' failed with error: {str(e)}")
                 results.append((test_name, False))
 
         # Print summary
@@ -338,7 +338,7 @@ class APITester:
         print("=" * 60)
 
         for test_name, success in results:
-            status = "✅ PASSED" if success else "❌ FAILED"
+            status = "PASSED" if success else "FAILED"
             print(f"{test_name}: {status}")
 
         passed = sum(1 for _, success in results if success)
@@ -349,7 +349,7 @@ class APITester:
         if passed == total:
             print("\n🎉 All tests passed successfully!")
         else:
-            print(f"\n⚠️ {total - passed} test(s) failed. Please review the output above.")
+            print(f"\n{total - passed} test(s) failed. Please review the output above.")
 
         return passed == total
 
@@ -364,9 +364,9 @@ def main():
     print("\nChecking if API is running at http://localhost:8000...")
     try:
         response = requests.get("http://localhost:8000")
-        print("✅ API is running!")
+        print("API is running!")
     except requests.exceptions.ConnectionError:
-        print("❌ API is not running!")
+        print("API is not running!")
         print("\nPlease start the API first with:")
         print("  uvicorn src.api.main:app --reload --port 8000")
         return
@@ -376,9 +376,9 @@ def main():
     success = tester.run_all_tests()
 
     if success:
-        print("\n✅ API is ready for production!")
+        print("\nAPI is ready for production!")
     else:
-        print("\n⚠️ Some tests failed. Please fix the issues before deployment.")
+        print("\nSome tests failed. Please fix the issues before deployment.")
 
 
 if __name__ == "__main__":

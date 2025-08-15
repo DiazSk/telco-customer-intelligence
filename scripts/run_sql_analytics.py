@@ -23,7 +23,7 @@ def create_database():
     # Save to database
     df.to_sql("telco_customers", conn, if_exists="replace", index=False)
 
-    print(f"✅ Database created with {len(df)} records")
+    print(f"Database created with {len(df)} records")
 
     return conn
 
@@ -202,13 +202,13 @@ def save_results_to_excel(results):
             clean_name = sheet_name.split(". ")[-1][:31]  # Max 31 chars
             df.to_excel(writer, sheet_name=clean_name, index=False)
 
-    print(f"\n✅ Results saved to {output_file}")
+    print(f"\nResults saved to {output_file}")
 
 
 def generate_insights(results):
     """Generate business insights from SQL results"""
     print("\n" + "=" * 60)
-    print("📊 KEY BUSINESS INSIGHTS")
+    print("KEY BUSINESS INSIGHTS")
     print("=" * 60)
 
     # Get churn rate
@@ -250,7 +250,7 @@ def generate_insights(results):
         print(f"   - Customers: {riskiest_payment['customer_count']}")
 
     print("\n" + "=" * 60)
-    print("💡 RECOMMENDATIONS")
+    print("RECOMMENDATIONS")
     print("=" * 60)
     print(
         """
@@ -282,7 +282,7 @@ def main():
     if not os.path.exists(db_path):
         conn = create_database()
     else:
-        print("✅ Using existing database")
+        print("Using existing database")
         conn = sqlite3.connect(db_path)
 
     # Run analytics queries
@@ -295,13 +295,13 @@ def main():
     try:
         save_results_to_excel(results)
     except ImportError:
-        print("\n⚠️ openpyxl not installed. Skipping Excel export.")
+        print("\nopenpyxl not installed. Skipping Excel export.")
         print("Install with: pip install openpyxl")
 
     # Close connection
     conn.close()
 
-    print("\n✅ SQL Analytics Complete!")
+    print("\nSQL Analytics Complete!")
     print("Check data/processed/sql_analytics_results.xlsx for detailed results")
 
 

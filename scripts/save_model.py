@@ -22,11 +22,11 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 def prepare_and_save_model():
     """Train and save the model with all necessary components."""
-    print("🚀 Training and saving model for API...")
+    print("Training and saving model for API...")
 
     # Load processed data
     df = pd.read_csv("data/processed/processed_telco_data.csv")
-    print(f"✅ Loaded {len(df)} records")
+    print(f"Loaded {len(df)} records")
 
     # Prepare features (same as in advanced_modeling.py)
     df["churn_binary"] = (df["Churn"] == "Yes").astype(int)
@@ -81,7 +81,7 @@ def prepare_and_save_model():
     X_test_scaled = scaler.transform(X_test)
 
     # Train XGBoost model (primary model)
-    print("🔧 Training XGBoost model...")
+    print("Training XGBoost model...")
     xgb_model = xgb.XGBClassifier(
         objective="binary:logistic",
         n_estimators=200,
@@ -103,7 +103,7 @@ def prepare_and_save_model():
     auc_score = roc_auc_score(y_test, y_pred_proba)
     accuracy = accuracy_score(y_test, y_pred)
 
-    print(f"✅ Model trained - AUC: {auc_score:.3f}, Accuracy: {accuracy:.3f}")
+    print(f"Model trained - AUC: {auc_score:.3f}, Accuracy: {accuracy:.3f}")
 
     # Create models directory
     os.makedirs("models/saved", exist_ok=True)
@@ -126,7 +126,7 @@ def prepare_and_save_model():
 
     # Save with joblib
     joblib.dump(model_artifacts, "models/saved/churn_model_artifacts.pkl")
-    print("✅ Model artifacts saved to models/saved/churn_model_artifacts.pkl")
+    print("Model artifacts saved to models/saved/churn_model_artifacts.pkl")
 
     # Also save feature importance
     feature_importance = pd.DataFrame(
@@ -134,14 +134,14 @@ def prepare_and_save_model():
     ).sort_values("importance", ascending=False)
 
     feature_importance.to_csv("models/saved/feature_importance.csv", index=False)
-    print("✅ Feature importance saved")
+    print("Feature importance saved")
 
     # Save sample data for testing
     test_sample = df.sample(5)[numeric_features + categorical_features]
     test_sample.to_csv("models/saved/test_sample.csv", index=False)
-    print("✅ Test sample saved")
+    print("Test sample saved")
 
-    print("\n📊 Model Summary:")
+    print("\nModel Summary:")
     print(f"  - Features: {len(X.columns)}")
     print(f"  - Training samples: {len(X_train)}")
     print(f"  - Test samples: {len(X_test)}")
@@ -155,4 +155,4 @@ def prepare_and_save_model():
 
 if __name__ == "__main__":
     prepare_and_save_model()
-    print("\n✅ Model preparation complete! Ready for API serving.")
+    print("\nModel preparation complete! Ready for API serving.")
