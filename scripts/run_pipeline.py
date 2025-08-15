@@ -47,7 +47,9 @@ def main():
 
         # Basic statistics
         logger.info(f"Processed dataset shape: {df_processed.shape}")
-        logger.info(f"Memory usage: {df_processed.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
+        logger.info(
+            f"Memory usage: {df_processed.memory_usage(deep=True).sum() / 1024**2:.2f} MB"
+        )
 
         # Feature statistics
         original_features = 21  # Original dataset had 21 columns

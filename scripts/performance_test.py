@@ -74,7 +74,9 @@ def main():
 
     # Test single prediction
     print("\n2. Testing Single Prediction:")
-    stats = test_endpoint_performance("http://127.0.0.1:8000/predict", customer, num_requests=5)
+    stats = test_endpoint_performance(
+        "http://127.0.0.1:8000/predict", customer, num_requests=5
+    )
 
     if stats:
         print(f"   Average: {stats['avg']:.2f}ms")

@@ -69,12 +69,18 @@ class ChurnModelingPipeline:
         exclude_cols = ["customerID", "Churn", "churn_binary"]
 
         # Identify numeric and categorical columns
-        numeric_features = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
-        categorical_features = df.select_dtypes(include=["object", "category"]).columns.tolist()
+        numeric_features = df.select_dtypes(
+            include=["int64", "float64"]
+        ).columns.tolist()
+        categorical_features = df.select_dtypes(
+            include=["object", "category"]
+        ).columns.tolist()
 
         # Remove excluded columns
         numeric_features = [col for col in numeric_features if col not in exclude_cols]
-        categorical_features = [col for col in categorical_features if col not in exclude_cols]
+        categorical_features = [
+            col for col in categorical_features if col not in exclude_cols
+        ]
 
         # Create feature dataframe
         X = pd.DataFrame()
@@ -172,12 +178,16 @@ class ChurnModelingPipeline:
             df_test = df.iloc[test_indices]
 
             # Calculate business-focused metrics
-            results[name] = self.calculate_business_metrics(y_test, y_pred_proba, X_test, df_test)
+            results[name] = self.calculate_business_metrics(
+                y_test, y_pred_proba, X_test, df_test
+            )
 
             # Add feature importance
             if hasattr(model, "feature_importances_"):
                 importance = (
-                    pd.DataFrame({"feature": X.columns, "importance": model.feature_importances_})
+                    pd.DataFrame(
+                        {"feature": X.columns, "importance": model.feature_importances_}
+                    )
                     .sort_values("importance", ascending=False)
                     .head(10)
                 )
@@ -197,7 +207,9 @@ class ChurnModelingPipeline:
         )
 
         # Find optimal threshold based on business value
-        thresholds = np.arange(0.2, 0.8, 0.01)  # Start from 0.2 to avoid too many interventions
+        thresholds = np.arange(
+            0.2, 0.8, 0.01
+        )  # Start from 0.2 to avoid too many interventions
         best_profit = -np.inf
         best_threshold = 0.5
         best_metrics = {}
@@ -212,7 +224,8 @@ class ChurnModelingPipeline:
 
             # Value of correctly identified churners
             tp_value = (
-                customer_values[tp_mask].sum() * self.business_params["intervention_success_rate"]
+                customer_values[tp_mask].sum()
+                * self.business_params["intervention_success_rate"]
             )
 
             # Cost of interventions
@@ -304,7 +317,8 @@ class ChurnModelingPipeline:
 
         # Calculate realistic ROI
         investment = (
-            metrics["customers_to_target"] * self.business_params["retention_campaign_cost"]
+            metrics["customers_to_target"]
+            * self.business_params["retention_campaign_cost"]
         )
         roi = profit / investment if investment > 0 else 0
 
@@ -358,7 +372,9 @@ def main():
             print("Loaded processed data (CSV)")
         except Exception as e:
             print(f"Error loading data: {e}")
-            print("Please run the data pipeline first: python src/data_pipeline/pipeline.py")
+            print(
+                "Please run the data pipeline first: python src/data_pipeline/pipeline.py"
+            )
             return
 
     # Train models

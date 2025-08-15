@@ -228,9 +228,9 @@ def generate_insights(results):
     # Revenue impact
     revenue_df = results.get("3. Revenue Impact Analysis")
     if revenue_df is not None:
-        churned_revenue = revenue_df[revenue_df["Churn"] == "Yes"]["total_monthly_revenue"].values[
-            0
-        ]
+        churned_revenue = revenue_df[revenue_df["Churn"] == "Yes"][
+            "total_monthly_revenue"
+        ].values[0]
         print(f"\n3. Monthly Revenue at Risk: ${churned_revenue:,.2f}")
         print(f"   - Annual Impact: ${churned_revenue * 12:,.2f}")
 

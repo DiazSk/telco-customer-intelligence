@@ -17,7 +17,9 @@ def check_file_exists(filepath, required=True):
         return True
     else:
         status = "✗" if required else "⚠"
-        print(f"{status} {filepath} missing {'(required)' if required else '(optional)'}")
+        print(
+            f"{status} {filepath} missing {'(required)' if required else '(optional)'}"
+        )
         return False
 
 
@@ -28,7 +30,9 @@ def check_directory_exists(dirpath, required=True):
         return True
     else:
         status = "✗" if required else "⚠"
-        print(f"{status} {dirpath}/ missing {'(required)' if required else '(optional)'}")
+        print(
+            f"{status} {dirpath}/ missing {'(required)' if required else '(optional)'}"
+        )
         return False
 
 

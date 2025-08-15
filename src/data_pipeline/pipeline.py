@@ -66,7 +66,9 @@ class DataQualityChecker:
         for col in df.columns:
             if col in schema.get("numeric_columns", []):
                 if not pd.api.types.is_numeric_dtype(df[col]):
-                    type_issues.append(f"{col} should be numeric but is {df[col].dtype}")
+                    type_issues.append(
+                        f"{col} should be numeric but is {df[col].dtype}"
+                    )
 
         return {"type_issues": type_issues}
 
@@ -100,7 +102,9 @@ class DataQualityChecker:
         self.quality_report["duplicates"] = self.check_duplicates(
             df, self.config["schema"]["id_column"]
         )
-        self.quality_report["data_types"] = self.check_data_types(df, self.config["schema"])
+        self.quality_report["data_types"] = self.check_data_types(
+            df, self.config["schema"]
+        )
         self.quality_report["outliers"] = self.check_outliers(
             df, self.config["schema"]["numeric_columns"]
         )
@@ -125,7 +129,9 @@ class DataProcessor:
             df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
             # Fill missing TotalCharges with MonthlyCharges * tenure
             mask = df["TotalCharges"].isna()
-            df.loc[mask, "TotalCharges"] = df.loc[mask, "MonthlyCharges"] * df.loc[mask, "tenure"]
+            df.loc[mask, "TotalCharges"] = (
+                df.loc[mask, "MonthlyCharges"] * df.loc[mask, "tenure"]
+            )
 
         # Handle any other missing values
         numeric_cols = df.select_dtypes(include=[np.number]).columns
@@ -353,7 +359,9 @@ class TelcoChurnPipeline:
         logger.info("Pipeline completed successfully!")
         logger.info(f"Original shape: {quality_report_raw['shape']}")
         logger.info(f"Processed shape: {quality_report_processed['shape']}")
-        logger.info(f"New features created: {len(df_processed.columns) - len(df.columns)}")
+        logger.info(
+            f"New features created: {len(df_processed.columns) - len(df.columns)}"
+        )
         logger.info("=" * 50)
 
         return df_processed

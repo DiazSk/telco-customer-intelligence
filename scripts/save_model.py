@@ -36,10 +36,14 @@ def prepare_and_save_model():
 
     # Get feature columns
     numeric_features = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
-    categorical_features = df.select_dtypes(include=["object", "category"]).columns.tolist()
+    categorical_features = df.select_dtypes(
+        include=["object", "category"]
+    ).columns.tolist()
 
     numeric_features = [col for col in numeric_features if col not in exclude_cols]
-    categorical_features = [col for col in categorical_features if col not in exclude_cols]
+    categorical_features = [
+        col for col in categorical_features if col not in exclude_cols
+    ]
 
     # Create feature dataframe
     X = pd.DataFrame()
