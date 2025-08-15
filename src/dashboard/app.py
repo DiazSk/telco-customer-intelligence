@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import requests
 import json
+import os
 from datetime import datetime, timedelta
 import time
 import warnings
@@ -64,7 +65,7 @@ st.markdown("""
 def initialize_session_state():
     """Initialize session state variables for better performance"""
     defaults = {
-        'api_url': "http://localhost:8000",
+        'api_url': os.getenv('API_URL', 'http://localhost:8000'),
         'selected_customer': None,
         'data_loaded': False,
         'last_refresh': None,
@@ -231,7 +232,7 @@ def calculate_roi(num_customers, churn_prob, intervention_cost, success_rate, cl
 
 # Sidebar
 with st.sidebar:
-    st.image("https://via.placeholder.com/300x100/4B0082/FFFFFF?text=Telco+Intelligence", use_container_width=True)
+    st.image("docs/screenshots/dashboard_1.png", use_container_width=True)
     st.title("Navigation")
     
     page = st.selectbox(
