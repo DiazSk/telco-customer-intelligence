@@ -6,11 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data_pipeline.pipeline import (
-    DataProcessor,
-    DataQualityChecker,
-    TelcoChurnPipeline,
-)
+from src.data_pipeline.pipeline import (DataProcessor, DataQualityChecker,
+                                        TelcoChurnPipeline)
 
 
 @pytest.fixture

@@ -22,14 +22,10 @@ from fastapi.responses import JSONResponse
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # Local imports after path setup
-from src.api.schemas.models import (  # noqa: E402
-    BatchPredictionRequest,
-    BatchPredictionResponse,
-    ChurnPredictionResponse,
-    CustomerFeatures,
-    HealthCheckResponse,
-    ModelMetricsResponse,
-)
+from src.api.schemas.models import (BatchPredictionRequest,  # noqa: E402
+                                    BatchPredictionResponse,
+                                    ChurnPredictionResponse, CustomerFeatures,
+                                    HealthCheckResponse, ModelMetricsResponse)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

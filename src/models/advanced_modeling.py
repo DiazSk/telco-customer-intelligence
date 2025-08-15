@@ -11,7 +11,8 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 from scipy import stats
-from sklearn.metrics import classification_report, precision_recall_curve, roc_auc_score
+from sklearn.metrics import (classification_report, precision_recall_curve,
+                             roc_auc_score)
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
