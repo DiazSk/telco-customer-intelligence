@@ -66,19 +66,26 @@ services:
 
   # Streamlit Dashboard
   dashboard:
-    build: .
-    command: streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
     ports:
       - "8501:8501"
     volumes:
-      - ./src:/app/src
+      - ./src/dashboard:/app/src/dashboard
       - ./data:/app/data
-      - ./models:/app/models
+      - ./.streamlit:/app/.streamlit
     environment:
       - API_URL=http://api:8000
       - PYTHONUNBUFFERED=1
     depends_on:
       - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   # MLflow Tracking Server
   mlflow:
