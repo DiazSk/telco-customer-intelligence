@@ -4,7 +4,7 @@ Fixes the negative ROI issue with better feature engineering and business parame
 """
 
 import warnings
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import lightgbm as lgb
 import numpy as np
@@ -31,7 +31,7 @@ except ImportError:
 class ChurnModelingPipeline:
     """Production-ready modeling pipeline with business focus"""
 
-    def __init__(self, business_params: Dict = None):
+    def __init__(self, business_params: Optional[Dict] = None):
         """
         Initialize with REALISTIC business parameters
         """

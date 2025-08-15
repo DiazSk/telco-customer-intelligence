@@ -140,6 +140,9 @@ def convert_numpy_types(obj):
 
 def prepare_features(customer: CustomerFeatures):
     """Optimized feature preparation using numpy arrays instead of pandas."""
+    if MODEL_ARTIFACTS is None or NUMPY_FEATURE_TEMPLATE is None:
+        raise ValueError("Model not loaded")
+    
     # Use pre-allocated numpy array for maximum speed
     features = NUMPY_FEATURE_TEMPLATE.copy()
 
@@ -202,7 +205,8 @@ def prepare_features(customer: CustomerFeatures):
 
     # Scale features
     if MODEL_ARTIFACTS.get("scaler") is not None:
-        features = MODEL_ARTIFACTS["scaler"].transform(features)
+        scaler = MODEL_ARTIFACTS["scaler"]
+        features = scaler.transform(features)
 
     return features
 

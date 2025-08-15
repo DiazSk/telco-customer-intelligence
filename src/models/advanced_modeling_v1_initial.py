@@ -4,7 +4,7 @@ Demonstrates DS skills: ML, Stats, Business Impact
 """
 
 import warnings
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import lightgbm as lgb
 import matplotlib.pyplot as plt
@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore")
 class ChurnModelingPipeline:
     """Production-ready modeling pipeline with business focus"""
 
-    def __init__(self, business_params: Dict = None):
+    def __init__(self, business_params: Optional[Dict] = None):
         """
         Initialize with business parameters
 
