@@ -1,0 +1,95 @@
+{
+  "timestamp": "2025-08-14 23:54:58",
+  "total_tests": 17,
+  "passed": 16,
+  "failed": 1,
+  "skipped": 0,
+  "success_rate": 94.11764705882352,
+  "details": [
+    [
+      "File Structure",
+      "src/dashboard/app.py",
+      true
+    ],
+    [
+      "File Structure",
+      "src/dashboard/dashboard_utils.py",
+      true
+    ],
+    [
+      "File Structure",
+      "src/dashboard/__init__.py",
+      true
+    ],
+    [
+      "File Structure",
+      "data/processed/processed_telco_data.csv",
+      true
+    ],
+    [
+      "File Structure",
+      "data/processed/customer_segments.csv",
+      true
+    ],
+    [
+      "Data Loading",
+      "Main dataset",
+      true
+    ],
+    [
+      "Data Columns",
+      "Required columns",
+      true
+    ],
+    [
+      "Data Loading",
+      "Segments dataset",
+      true
+    ],
+    [
+      "Data Columns",
+      "Risk segments",
+      true
+    ],
+    [
+      "Streamlit",
+      "Installation",
+      true
+    ],
+    [
+      "Plotly",
+      "Installation",
+      true
+    ],
+    [
+      "Utils",
+      "Formatting",
+      true
+    ],
+    [
+      "Utils",
+      "Business metrics",
+      true
+    ],
+    [
+      "Utils",
+      "ROI calculation",
+      true
+    ],
+    [
+      "API",
+      "Connection",
+      false
+    ],
+    [
+      "Config",
+      "File exists",
+      true
+    ],
+    [
+      "Config",
+      "Import",
+      true
+    ]
+  ]
+}
