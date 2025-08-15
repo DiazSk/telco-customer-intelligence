@@ -1,6 +1,6 @@
 # 🎯 Telco Customer Intelligence Platform
 
-<div align="center">
+<div style="text-align: center;">
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-green?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -10,7 +10,7 @@
 
 <h3>An end-to-end machine learning solution that predicts customer churn with 84% accuracy and delivers $487K in annual savings through targeted retention strategies</h3>
 
-[**Live Demo**](#) | [**API Docs**](#) | [**Dashboard**](#) | [**Documentation**](#documentation)
+[**Live Demo**](#) | [**API Docs**](#-api-documentation) | [**Dashboard**](#-dashboard) | [**Documentation**](#-project-structure)
 
 <img src="docs/dashboard_preview.png" alt="Dashboard Preview" width="800">
 
@@ -22,11 +22,11 @@
 
 <table>
 <tr>
-<td align="center"><strong>84%</strong><br/>Model Accuracy<br/>(AUC-ROC)</td>
-<td align="center"><strong>$487K</strong><br/>Annual Savings<br/>Identified</td>
-<td align="center"><strong>523</strong><br/>At-Risk Customers<br/>Targeted</td>
-<td align="center"><strong><100ms</strong><br/>Real-time Prediction<br/>Latency</td>
-<td align="center"><strong>26.5%</strong><br/>Churn Rate<br/>Reduced to 16%</td>
+<td style="text-align: center;"><strong>84%</strong><br/>Model Accuracy<br/>(AUC-ROC)</td>
+<td style="text-align: center;"><strong>$487K</strong><br/>Annual Savings<br/>Identified</td>
+<td style="text-align: center;"><strong>523</strong><br/>At-Risk Customers<br/>Targeted</td>
+<td style="text-align: center;"><strong><100ms</strong><br/>Real-time Prediction<br/>Latency</td>
+<td style="text-align: center;"><strong>26.5%</strong><br/>Churn Rate<br/>Reduced to 16%</td>
 </tr>
 </table>
 
@@ -47,8 +47,8 @@
 - [Results & Insights](#-results--insights)
 - [Future Enhancements](#-future-enhancements)
 - [Contributing](#-contributing)
-- [License](#license)
-- [Contact](#contact)
+- [License](#-license)
+- [Contact](#-contact)
 
 ## 🎯 Overview
 
@@ -74,12 +74,12 @@ Our ML-powered platform provides:
 
 ### Financial Benefits
 
-```python
-Annual Revenue at Risk:     $1,669,570
+```
+Annual Revenue at Risk:      $1,669,570
 Prevented with Our Solution: $1,050,000 (63% reduction)
 Implementation Cost:         $125,000
 Net Annual Benefit:          $925,000
-ROI:                        7.4x
+ROI:                         7.4x
 ```
 
 ### Strategic Outcomes
@@ -281,7 +281,7 @@ telco-customer-intelligence/
 
 ### Pipeline Architecture
 
-```python
+```
 # Pipeline stages
 1. Data Ingestion    → Load raw telco data (7,043 customers)
 2. Data Validation   → Check quality, handle missing values
@@ -323,7 +323,7 @@ python src/data_pipeline/pipeline.py --config configs/pipeline_config.yaml
 
 ### Training
 
-```python
+```bash
 # Train with default config
 python src/models/train.py
 
@@ -337,7 +337,7 @@ python src/models/train.py \
 
 ### Feature Importance (Top 10)
 
-```python
+```
 1. Contract_Month-to-month     # 25% importance
 2. tenure                       # 20% importance
 3. MonthlyCharges              # 15% importance
@@ -438,7 +438,7 @@ GET /model/metrics
 
 <table>
 <tr>
-<td width="50%">
+<td style="width: 50%;">
 
 #### 🏠 Executive Dashboard
 - Real-time KPI metrics
@@ -447,7 +447,7 @@ GET /model/metrics
 - Risk distribution charts
 
 </td>
-<td width="50%">
+<td style="width: 50%;">
 
 #### 🔮 Predictions
 - Individual customer scoring
@@ -458,7 +458,7 @@ GET /model/metrics
 </td>
 </tr>
 <tr>
-<td width="50%">
+<td style="width: 50%;">
 
 #### 💰 ROI Calculator
 - Campaign cost analysis
@@ -467,7 +467,7 @@ GET /model/metrics
 - Investment recommendations
 
 </td>
-<td width="50%">
+<td style="width: 50%;">
 
 #### ⚙️ What-If Scenarios
 - Contract migration simulation
@@ -481,7 +481,7 @@ GET /model/metrics
 
 ### Screenshots
 
-<div align="center">
+<div style="text-align: center;">
 <img src="docs/executive_dashboard.png" width="45%" alt="Executive Dashboard">
 <img src="docs/predictions_page.png" width="45%" alt="Predictions">
 <img src="docs/roi_calculator.png" width="45%" alt="ROI Calculator">
@@ -604,7 +604,7 @@ locust -f tests/performance/locustfile.py --host=http://localhost:8000
 
 ### Business Recommendations
 
-```python
+```
 # Priority 1: Immediate Actions (Week 1)
 - Contact 250 critical-risk customers personally
 - Offer 50% discount for 2-year contracts
@@ -671,18 +671,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-**Your Name**
-- 📧 Email: your.email@example.com
-- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- 🐙 GitHub: [@yourusername](https://github.com/yourusername)
-- 🌐 Portfolio: [yourportfolio.com](https://yourportfolio.com)
+**Project Maintainer**
+- 📧 Email: zaid07sk@gmail.com
+- 💼 LinkedIn: [linkedin.com/in/zaidshaikhdeveloper](https://linkedin.com/in/zaidshaikhdeveloper)
+- 🐙 GitHub: [@DiazSk](https://github.com/DiazSk)
+- 🌐 Portfolio: [telco-intelligence-portfolio.com](https://telco-intelligence-portfolio.com)
 
 ---
 
-<div align="center">
+<div style="text-align: center;">
 
 **If you find this project helpful, please ⭐ star this repository!**
 
-Made with ❤️ by [Your Name](https://github.com/yourusername)
+Made with ❤️ by [DiazSk](https://github.com/DiazSk)
 
 </div>

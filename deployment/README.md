@@ -196,6 +196,9 @@ Use the provided `Dockerfile.dashboard` with ECS task definition.
 
 ### 1. Advanced Caching Strategy
 ```python
+import streamlit as st
+import pandas as pd
+
 # In src/dashboard/app.py - already optimized
 @st.cache_data(ttl=300, max_entries=3)
 def load_data():
@@ -205,11 +208,18 @@ def load_data():
 @st.cache_data(ttl=600)
 def load_model_predictions():
     """Cache expensive model operations"""
+    # Example function definition
+    def expensive_computation():
+        """Example function for expensive computation"""
+        return {"predictions": [0.1, 0.2, 0.3]}
+    
     return expensive_computation()
 ```
 
 ### 2. Session State Management
 ```python
+import streamlit as st
+
 # Initialize session state for better UX
 if 'customer_data' not in st.session_state:
     st.session_state.customer_data = None
@@ -220,6 +230,18 @@ if 'selected_filters' not in st.session_state:
 
 ### 3. Lazy Loading Implementation
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example function definitions
+def compute_advanced_analytics():
+    """Example function for advanced analytics computation"""
+    return {"correlations": {}, "insights": []}
+
+def display_advanced_analytics(analytics):
+    """Example function to display analytics"""
+    st.json(analytics)
+
 # Load heavy components only when needed
 if st.button("Show Advanced Analytics"):
     with st.spinner("Loading advanced analytics..."):
@@ -292,6 +314,15 @@ headless = true
 
 ### Health Checks
 ```python
+import streamlit as st
+import pandas as pd
+from datetime import datetime
+
+# Example function definition
+def check_api_connection():
+    """Example function to check API connection"""
+    return True
+
 # Built into the dashboard
 def health_check():
     return {

@@ -32,9 +32,9 @@ python scripts/start_api.py
 
 For M1/M2 Macs, you can leverage additional performance:
 
-```python
+```bash
 # Install optimized packages
-pip install numpy[mkl]  # Intel MKL for faster numpy
+pip install numpy[mkl] # Intel MKL for faster numpy
 pip install tensorflow-macos  # Apple-optimized TensorFlow
 ```
 
@@ -69,7 +69,7 @@ docker run -p 8000:8000 your-api
 
 Our `scripts/start_api.py` automatically optimizes for each platform:
 
-```python
+```bash
 # Auto-detects platform and optimizes
 python scripts/start_api.py
 

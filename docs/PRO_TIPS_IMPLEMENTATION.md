@@ -2,6 +2,8 @@
 
 ## 🏆 **YOUR DASHBOARD ALREADY IMPLEMENTS ALL PRO TIPS!**
 
+This guide demonstrates how your Telco Customer Intelligence Platform implements all recommended Streamlit pro tips and best practices.
+
 Your Telco Customer Intelligence Platform showcases professional-grade Streamlit development with all best practices implemented. Here's how each pro tip is expertly applied:
 
 ---
@@ -10,6 +12,8 @@ Your Telco Customer Intelligence Platform showcases professional-grade Streamlit
 
 ### **💡 Pro Tip Implementation:**
 ```python
+import streamlit as st
+
 tab1, tab2, tab3 = st.tabs(["Overview", "Details", "Analysis"])
 ```
 
@@ -18,6 +22,8 @@ Your dashboard expertly uses tabs throughout for logical organization:
 
 #### **🔮 Real-time Predictions Page:**
 ```python
+import streamlit as st
+
 tab1, tab2 = st.tabs(["Select Existing Customer", "Manual Input"])
 ```
 - **Perfect Organization**: Separates existing vs new customer prediction flows
@@ -25,6 +31,8 @@ tab1, tab2 = st.tabs(["Select Existing Customer", "Manual Input"])
 
 #### **📊 Customer Analytics Page:**
 ```python
+import streamlit as st
+
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Distributions", 
     "Correlations", 
@@ -39,6 +47,8 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 #### **🎯 Segmentation Analysis:**
 ```python
+import streamlit as st
+
 tab1, tab2, tab3 = st.tabs([
     "Risk-Based Segmentation", 
     "Value-Based Segmentation", 
@@ -54,6 +64,14 @@ tab1, tab2, tab3 = st.tabs([
 
 ### **💡 Pro Tip Implementation:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example function definition
+def expensive_computation():
+    """Example function for expensive computation"""
+    return {"result": "computed_data"}
+
 with st.spinner("Analyzing data..."):
     results = expensive_computation()
 ```
@@ -63,6 +81,17 @@ Your dashboard provides excellent user feedback with multiple loading patterns:
 
 #### **🔮 Real-time Predictions:**
 ```python
+import streamlit as st
+import time
+import pandas as pd
+
+# Example function and data
+def call_api_prediction(customer_data):
+    """Example function for API prediction call"""
+    return {"churn_probability": 0.75, "recommendations": ["Retention campaign"]}
+
+customer_data = {"customer_id": "12345", "features": {}}
+
 with st.spinner("Analyzing customer..."):
     time.sleep(0.5)  # Simulate processing
     result = call_api_prediction(customer_data)
@@ -72,6 +101,18 @@ with st.spinner("Analyzing customer..."):
 
 #### **🚀 Advanced Analytics (Lazy Loading):**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
+# Define the function for this example
+@st.cache_data(ttl=600, max_entries=5)
+def compute_advanced_analytics(df, segment_type="risk"):
+    """Example function for advanced analytics computation"""
+    return {"correlations": df.corr(), "insights": ["Sample insight"]}
+
 if st.button("🔍 Compute Advanced Correlations"):
     with st.spinner("Computing correlations..."):
         if 'advanced_analytics' not in st.session_state:
@@ -82,6 +123,14 @@ if st.button("🔍 Compute Advanced Correlations"):
 
 #### **📊 Feature Importance:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example function definition
+def load_feature_importance():
+    """Example function to load feature importance"""
+    return {"tenure": 0.25, "monthly_charges": 0.20, "contract_type": 0.15}
+
 if st.button("📊 Generate Feature Importance"):
     with st.spinner("Loading feature importance..."):
         if 'feature_importance' not in st.session_state:
@@ -90,6 +139,8 @@ if st.button("📊 Generate Feature Importance"):
 
 #### **🎯 Deep Segment Analysis:**
 ```python
+import streamlit as st
+
 if st.button("🎯 Deep Segment Analysis"):
     with st.spinner("Analyzing segments..."):
         analytics = st.session_state.advanced_analytics
@@ -103,6 +154,13 @@ if st.button("🎯 Deep Segment Analysis"):
 
 ### **💡 Pro Tip Implementation:**
 ```python
+import streamlit as st
+
+# Define the function for this example
+def load_data():
+    """Example function for data loading"""
+    return {"data": "sample_data"}
+
 try:
     data = load_data()
 except Exception as e:
@@ -115,6 +173,9 @@ Your dashboard has **enterprise-grade error handling** with multiple layers:
 
 #### **🔧 Comprehensive Data Loading:**
 ```python
+import streamlit as st
+import pandas as pd
+
 @st.cache_data(ttl=300)
 def load_data():
     try:
@@ -145,6 +206,12 @@ def load_data():
 
 #### **🛡️ Dashboard-Level Protection:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get data from session state or load it
+df = st.session_state.get('data', pd.DataFrame())
+
 # Check if data loaded successfully
 if df.empty:
     st.error("⚠️ Unable to load data. Please check that the data files exist in the data/processed/ directory.")
@@ -158,6 +225,9 @@ if 'Churn' not in df.columns:
 
 #### **🔗 API Error Handling:**
 ```python
+import streamlit as st
+import requests
+
 # API Status Check
 try:
     response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
@@ -171,6 +241,12 @@ except:
 
 #### **📊 Filter Validation:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
 # Check if filtered data is empty
 if filtered_df.empty:
     st.warning("⚠️ No data matches the current filter criteria. Please adjust your filters.")
@@ -179,6 +255,12 @@ if filtered_df.empty:
 
 #### **⚡ Computation Error Handling:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
 try:
     tenure_groups = pd.cut(filtered_df['tenure'], bins=6)
     # ... chart creation code ...
@@ -195,6 +277,8 @@ except ValueError as e:
 
 ### **💡 Pro Tip Implementation:**
 ```python
+import streamlit as st
+
 st.info("💡 Tip: Use the filters to focus on specific segments")
 ```
 
@@ -203,6 +287,8 @@ Your dashboard provides **comprehensive user guidance** with multiple help patte
 
 #### **📋 Contextual Help in Inputs:**
 ```python
+import streamlit as st
+
 st.session_state.user_preferences['auto_refresh'] = st.checkbox(
     "Auto-refresh data", 
     value=st.session_state.user_preferences.get('auto_refresh', False),
@@ -218,6 +304,8 @@ st.session_state.user_preferences['cache_analytics'] = st.checkbox(
 
 #### **💡 Strategic Business Insights:**
 ```python
+import streamlit as st
+
 st.info("""
 #### 💡 Strategic Focus
 - $487k potential savings identified
@@ -228,19 +316,34 @@ st.info("""
 
 #### **🎯 Advanced Analytics Guidance:**
 ```python
+import streamlit as st
+
 st.markdown("#### 🚀 Advanced Analytics")
 st.markdown("*These computations are performed on-demand for optimal performance.*")
 ```
 
 #### **📊 Performance Tips:**
 ```python
+import streamlit as st
+
 if st.button("🔍 Compute Advanced Correlations", help="Analyze feature correlations"):
+    st.write("Correlations computed!")
+    
 if st.button("📊 Generate Feature Importance", help="Show model feature importance"):
+    st.write("Feature importance generated!")
+    
 if st.button("🎯 Deep Segment Analysis", help="Detailed segment performance"):
+    st.write("Segment analysis completed!")
 ```
 
 #### **🔧 Debug Information:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
 if st.session_state.user_preferences.get('show_debug', False):
     with st.expander("🔧 Performance Debug Info"):
         st.json({
@@ -251,6 +354,12 @@ if st.session_state.user_preferences.get('show_debug', False):
 
 #### **⚠️ Data Quality Warnings:**
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get data from session state or load it
+df = st.session_state.get('data', pd.DataFrame())
+
 if not df.empty:
     st.warning("⚠️ Churn data not available")
 ```
@@ -263,6 +372,8 @@ if not df.empty:
 
 ### **✅ 5. Session State Management**
 ```python
+import streamlit as st
+
 def initialize_session_state():
     """Initialize session state variables for better performance"""
     defaults = {
@@ -283,29 +394,52 @@ def initialize_session_state():
 
 ### **✅ 6. Advanced Caching Strategy**
 ```python
+import streamlit as st
+
 @st.cache_data(ttl=300)  # 5-minute cache
 def load_data():
+    """Example function for data loading"""
+    return {"data": "loaded_data"}
 
 @st.cache_data(ttl=600, max_entries=5)  # 10-minute cache, max 5 entries  
 def compute_advanced_analytics():
+    """Example function for advanced analytics"""
+    return {"analytics": "computed_data"}
 
 @st.cache_data(ttl=1800)  # 30-minute cache
 def load_feature_importance():
+    """Example function for feature importance"""
+    return {"importance": "feature_data"}
 ```
 
 ### **✅ 7. Performance Optimization**
 ```python
+import streamlit as st
+import pandas as pd
+
 # Lazy loading for expensive operations
+filtered_df = st.session_state.get('filtered_df', pd.DataFrame())
+
+def compute_advanced_analytics(df, segment_type="risk"):
+    """Example function for advanced analytics computation"""
+    return {"correlations": df.corr(), "insights": ["Sample insight"]}
+
 if st.button("🔍 Compute Advanced Correlations"):
     # Only compute when requested
+    with st.spinner("Computing correlations..."):
+        if 'advanced_analytics' not in st.session_state:
+            st.session_state.advanced_analytics = compute_advanced_analytics(filtered_df)
 
 # Smart data validation
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
 if len(filtered_df) < 6:
     st.warning("⚠️ Not enough data points to create tenure trends.")
 ```
 
 ### **✅ 8. Professional Styling**
 ```python
+import streamlit as st
+
 st.markdown("""
     <style>
     .metric-card {

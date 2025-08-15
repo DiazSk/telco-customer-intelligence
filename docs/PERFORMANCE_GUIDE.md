@@ -9,17 +9,28 @@ This guide documents all performance optimizations implemented in the Telco Cust
 
 #### Data Loading Caching
 ```python
+import streamlit as st
+import pandas as pd
+import numpy as np
+
 @st.cache_data(ttl=300)  # 5-minute cache
 def load_data():
     """Cached data loading with automatic refresh"""
+    return pd.read_csv("data/processed/processed_telco_data.csv")
     
 @st.cache_data(ttl=600, max_entries=5)  # 10-minute cache, max 5 entries
 def compute_advanced_analytics(df, segment_type="risk"):
     """Cache expensive analytics computations"""
+    # Example analytics computation
+    if segment_type == "risk":
+        return {"correlations": df.corr(), "insights": ["Sample insight"], "segment": segment_type}
+    else:
+        return {"correlations": df.corr(), "insights": ["Sample insight"], "segment": segment_type}
     
 @st.cache_data(ttl=1800)  # 30-minute cache
 def load_feature_importance():
     """Long-term cache for stable model data"""
+    return {"tenure": 0.25, "monthly_charges": 0.20, "contract_type": 0.15}
 ```
 
 #### Cache Benefits
@@ -32,6 +43,9 @@ def load_feature_importance():
 
 #### Intelligent State Initialization
 ```python
+import streamlit as st
+import pandas as pd
+
 def initialize_session_state():
     """Initialize session state variables for better performance"""
     defaults = {
@@ -48,6 +62,11 @@ def initialize_session_state():
             'cache_analytics': True
         }
     }
+    
+    # Initialize session state with defaults
+    for key, value in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = value
 ```
 
 #### Session Benefits
@@ -60,7 +79,23 @@ def initialize_session_state():
 
 #### On-Demand Computations
 ```python
+import streamlit as st
+import pandas as pd
+
 # Advanced Analytics Tab - Lazy Loading
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
+# Define the function for this example
+@st.cache_data(ttl=600, max_entries=5)
+def compute_advanced_analytics(df, segment_type="risk"):
+    """Cache expensive analytics computations"""
+    # Example analytics computation
+    if segment_type == "risk":
+        return {"correlations": df.corr(), "insights": ["Sample insight"], "segment": segment_type}
+    else:
+        return {"correlations": df.corr(), "insights": ["Sample insight"], "segment": segment_type}
+
 if st.button("🔍 Compute Advanced Correlations"):
     with st.spinner("Computing correlations..."):
         if 'advanced_analytics' not in st.session_state:
@@ -152,6 +187,8 @@ gatherUsageStats = false
 
 #### Session State Cleanup
 ```python
+import streamlit as st
+
 # Automatic cleanup of large objects
 if len(st.session_state.filter_cache) > 50:
     st.session_state.filter_cache.clear()
@@ -159,7 +196,12 @@ if len(st.session_state.filter_cache) > 50:
 
 #### Cache Size Limits
 ```python
+import streamlit as st
+
 @st.cache_data(ttl=600, max_entries=5)  # Limit to 5 cached results
+def example_cached_function():
+    """Example function with cache size limits"""
+    return {"result": "cached_data"}
 ```
 
 ### 3. Error Handling
@@ -173,6 +215,12 @@ if len(st.session_state.filter_cache) > 50:
 
 ### Performance Dashboard
 ```python
+import streamlit as st
+import pandas as pd
+
+# Example: Get filtered data from session state or load it
+filtered_df = st.session_state.get('filtered_data', pd.DataFrame())
+
 if st.session_state.user_preferences.get('show_debug', False):
     with st.expander("🔧 Performance Debug Info"):
         st.json({

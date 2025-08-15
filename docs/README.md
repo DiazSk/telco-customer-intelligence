@@ -13,18 +13,18 @@ Welcome to the comprehensive documentation for the Telco Customer Churn Predicti
 ## 🚀 Quick Start Guides
 
 ### For Developers
-1. [API Setup & Testing](api/README.md#quick-start)
-2. [Local Development](api/README.md#development)
-3. [Performance Testing](api/README.md#performance-benchmarks)
+1. [API Setup & Testing](api/README.md)
+2. [Local Development](api/README.md)
+3. [Performance Testing](api/PLATFORM_PERFORMANCE.md)
 
 ### For Data Scientists
-1. [Model Overview](models/README.md#model-architecture)
-2. [Training Process](models/README.md#training)
-3. [Performance Metrics](models/README.md#evaluation)
+1. [Model Overview](models/README.md#-model-architecture)
+2. [Training Process](models/README.md#-training-process)
+3. [Performance Metrics](models/README.md#-model-evaluation)
 
 ### For Stakeholders
 1. [Executive Summary](EXECUTIVE_SUMMARY.md)
-2. [Business Impact](EXECUTIVE_SUMMARY.md#revenue-at-risk)
+2. [Business Impact](EXECUTIVE_SUMMARY.md#-revenue-at-risk-167m-annually)
 3. [Implementation Roadmap](EXECUTIVE_SUMMARY.md#recommended-implementation-roadmap)
 
 ## 🏗️ System Architecture
