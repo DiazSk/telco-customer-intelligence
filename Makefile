@@ -1,163 +1,154 @@
-# Makefile for Telco Customer Intelligence Platform
+# Telco Customer Intelligence Platform - Makefile
+# Development and deployment automation
 
-.PHONY: help install clean test run-pipeline train-model api dashboard docker-build docker-up format lint
-
-# Variables
-PYTHON := python
-PIP := pip
-PROJECT_NAME := telco-customer-intelligence
-DOCKER_IMAGE := $(PROJECT_NAME):latest
+.PHONY: help install dev-install clean test lint format build up down logs restart health deploy-prod backup
 
 # Default target
 help:
-	@echo "Available commands:"
-	@echo "  make install       - Install dependencies"
-	@echo "  make clean        - Clean temporary files and caches"
-	@echo "  make test         - Run tests"
-	@echo "  make run-pipeline - Run data pipeline"
-	@echo "  make train-model  - Train ML model"
-	@echo "  make api          - Start FastAPI server"
-	@echo "  make dashboard    - Start Streamlit dashboard"
-	@echo "  make docker-build - Build Docker image"
-	@echo "  make docker-up    - Run Docker containers"
-	@echo "  make format       - Format code with black"
-	@echo "  make lint         - Lint code with flake8"
-	@echo "  make all          - Run complete pipeline"
+	@echo "Telco Customer Intelligence Platform - Available commands:"
+	@echo ""
+	@echo "Development:"
+	@echo "  install          Install production dependencies"
+	@echo "  dev-install      Install development dependencies"
+	@echo "  clean           Clean up Python cache and temp files"
+	@echo "  test            Run all tests"
+	@echo "  lint            Run linting checks"
+	@echo "  format          Format code with black and isort"
+	@echo ""
+	@echo "Docker:"
+	@echo "  build           Build Docker images"
+	@echo "  up              Start development environment"
+	@echo "  down            Stop development environment"
+	@echo "  logs            Show container logs"
+	@echo "  restart         Restart all containers"
+	@echo "  health          Check container health"
+	@echo "  test-docker     Test Docker containers"
+	@echo ""
+	@echo "Production:"
+	@echo "  deploy-prod     Deploy to production"
+	@echo "  backup          Backup production data"
+	@echo ""
 
-# Installation
+# Development setup
 install:
-	$(PIP) install -r requirements.txt
-	$(PIP) install -r requirements-dev.txt
-	$(PYTHON) -m pip install -e .
-	@echo "Creating necessary directories..."
-	@mkdir -p data/{raw,processed,features}
-	@mkdir -p logs
-	@mkdir -p models
-	@mkdir -p mlruns
-	@echo "Installation complete!"
+	pip install -r requirements.txt
 
-# Clean temporary files
+dev-install:
+	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
+
 clean:
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
-	find . -type f -name ".DS_Store" -delete
-	rm -rf .pytest_cache
-	rm -rf .coverage
-	rm -rf htmlcov
-	rm -rf dist
-	rm -rf build
-	rm -rf *.egg-info
-	@echo "Cleaned temporary files"
+	find . -type d -name "*.egg-info" -exec rm -rf {} +
+	find . -type f -name ".coverage" -delete
+	rm -rf .pytest_cache/
+	rm -rf htmlcov/
 
-# Run tests
+# Testing
 test:
-	$(PYTHON) -m pytest tests/ -v --cov=src --cov-report=html
+	python -m pytest tests/ -v --cov=src --cov-report=html --cov-report=term-missing
 
 test-unit:
-	$(PYTHON) -m pytest tests/unit/ -v
+	python -m pytest tests/unit/ -v
 
 test-integration:
-	$(PYTHON) -m pytest tests/integration/ -v
+	python -m pytest tests/integration/ -v
 
-# Run data pipeline
-run-pipeline:
-	$(PYTHON) src/data_pipeline/pipeline.py --config configs/pipeline_config.yaml
-
-# Train model
-train-model:
-	$(PYTHON) src/models/train.py --config configs/model_config.yaml
-
-# Start API server
-api:
-	uvicorn src.api.main:app --reload --port 8000
-
-# Start dashboard
-dashboard:
-	streamlit run src/dashboard/app.py
-
-# Docker commands
-docker-build:
-	docker build -t $(DOCKER_IMAGE) .
-
-docker-up:
-	docker-compose up -d
-
-docker-down:
-	docker-compose down
-
-docker-logs:
-	docker-compose logs -f
+test-performance:
+	python -m pytest tests/performance/ -v
 
 # Code quality
-format:
-	black src/
-	black tests/
-	isort src/
-	isort tests/
-
 lint:
-	flake8 src/ --max-line-length=100 --ignore=E203,W503
+	flake8 src/ --max-line-length=88 --extend-ignore=E203,W503
 	mypy src/ --ignore-missing-imports
 
-# Run quality checks
-quality: format lint test
-	@echo "All quality checks passed!"
+format:
+	black src/ tests/
+	isort src/ tests/
 
-# Complete pipeline
-all: clean install run-pipeline train-model
-	@echo "Complete pipeline executed successfully!"
+format-check:
+	black --check src/ tests/
+	isort --check-only src/ tests/
 
-# Development setup
-dev-setup: install
-	pre-commit install
-	@echo "Development environment ready!"
+# Docker development
+build:
+	docker compose build
 
-# Create directories
-setup-dirs:
-	mkdir -p data/{raw,processed,features}
-	mkdir -p src/{data_pipeline,feature_engineering,models,api,monitoring,utils}
-	mkdir -p notebooks
-	mkdir -p tests/{unit,integration}
-	mkdir -p deployment/{docker,kubernetes}
-	mkdir -p docs/{api,models}
-	mkdir -p configs
-	mkdir -p scripts
-	mkdir -p logs
-	mkdir -p models
-	touch data/raw/.gitkeep
-	touch data/processed/.gitkeep
-	touch data/features/.gitkeep
+up:
+	docker compose up -d
 
-# Download data (if needed)
-download-data:
-	@echo "Place your Telco_Customer_Churn.csv file in data/raw/"
-	@echo "You can download it from: https://www.kaggle.com/blastchar/telco-customer-churn"
+down:
+	docker compose down
 
-# Generate documentation
-docs:
-	pdoc --html --output-dir docs src
+logs:
+	docker compose logs -f
 
-# Run notebook
-notebook:
-	jupyter notebook notebooks/
+restart:
+	docker compose restart
 
-# Check environment
-check-env:
-	@echo "Python version:"
-	@$(PYTHON) --version
-	@echo "\nInstalled packages:"
-	@$(PIP) list | grep -E "pandas|scikit-learn|xgboost|fastapi|streamlit"
+health:
+	docker compose ps
+	@echo "\nChecking service health..."
+	@curl -f http://localhost:8000/health || echo "API not ready"
+	@curl -f http://localhost:8501/_stcore/health || echo "Dashboard not ready"
+	@curl -f http://localhost:5000/health || echo "MLflow not ready"
 
-# Initialize database (if using)
-init-db:
-	$(PYTHON) scripts/init_db.py
+test-docker:
+	python scripts/test_docker.py
 
-# Run MLflow UI
-mlflow-ui:
-	mlflow ui --backend-store-uri file:./mlruns
+# Production deployment
+deploy-prod:
+	@echo "Deploying to production..."
+	docker compose -f docker-compose.prod.yml build
+	docker compose -f docker-compose.prod.yml up -d
+	@echo "Production deployment complete!"
 
-# Profile code
-profile:
-	$(PYTHON) -m cProfile -o profile.stats src/data_pipeline/pipeline.py
-	@echo "Profile saved to profile.stats"
-	@echo "View with: python -m pstats profile.stats"
+backup:
+	@echo "Creating backup..."
+	docker compose exec postgres pg_dump -U telco_user telco_db > backup_$(shell date +%Y%m%d_%H%M%S).sql
+	@echo "Backup complete!"
+
+# Database operations
+db-shell:
+	docker compose exec postgres psql -U telco_user -d telco_db
+
+db-reset:
+	docker compose down -v
+	docker compose up -d postgres
+	sleep 10
+	docker compose up -d
+
+# Monitoring
+monitor:
+	@echo "Opening monitoring dashboards..."
+	@echo "Prometheus: http://localhost:9090"
+	@echo "Grafana: http://localhost:3000"
+	@echo "API Docs: http://localhost:8000/docs"
+	@echo "Dashboard: http://localhost:8501"
+	@echo "MLflow: http://localhost:5000"
+
+# CI/CD helpers
+ci-test:
+	python -m pytest tests/ -v --cov=src --cov-report=xml
+
+ci-build:
+	docker build -t telco-api .
+	docker build -f Dockerfile.dashboard -t telco-dashboard .
+
+ci-security:
+	bandit -r src/ -f json -o bandit-report.json
+	safety check --json --output safety-report.json
+
+# Development server
+run-api:
+	uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+run-dashboard:
+	streamlit run src/dashboard/app.py --server.port 8501
+
+run-pipeline:
+	python src/data_pipeline/pipeline.py
+
+run-notebook:
+	jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser
