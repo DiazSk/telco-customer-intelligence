@@ -67,9 +67,7 @@ async def lifespan(app: FastAPI):
             FEATURE_COLUMNS_INDICES = {}
             for i, col in enumerate(MODEL_ARTIFACTS["feature_columns"]):
                 FEATURE_COLUMNS_INDICES[col] = i
-            NUMPY_FEATURE_TEMPLATE = np.zeros(
-                (1, len(MODEL_ARTIFACTS["feature_columns"]))
-            )
+            NUMPY_FEATURE_TEMPLATE = np.zeros((1, len(MODEL_ARTIFACTS["feature_columns"])))
 
             # Warm up the model with a dummy prediction
             warmup_features = np.zeros((1, len(MODEL_ARTIFACTS["feature_columns"])))
@@ -155,9 +153,7 @@ def prepare_features(customer: CustomerFeatures):
     for col in MODEL_ARTIFACTS["numeric_features"]:
         if col in FEATURE_COLUMNS_INDICES and col in customer_dict:
             idx = FEATURE_COLUMNS_INDICES[col]
-            features[0, idx] = (
-                customer_dict[col] if customer_dict[col] is not None else 0
-            )
+            features[0, idx] = customer_dict[col] if customer_dict[col] is not None else 0
 
     # Encode categorical features with caching
     for col in MODEL_ARTIFACTS["categorical_features"]:
@@ -173,9 +169,7 @@ def prepare_features(customer: CustomerFeatures):
                 # Encode and cache
                 if col in MODEL_ARTIFACTS["label_encoders"]:
                     try:
-                        encoded_value = MODEL_ARTIFACTS["label_encoders"][
-                            col
-                        ].transform([value])[0]
+                        encoded_value = MODEL_ARTIFACTS["label_encoders"][col].transform([value])[0]
                         FEATURE_CACHE[cache_key] = encoded_value
                     except ValueError:
                         encoded_value = 0
@@ -192,18 +186,14 @@ def prepare_features(customer: CustomerFeatures):
         charges_idx = FEATURE_COLUMNS_INDICES.get("MonthlyCharges", -1)
         if tenure_idx >= 0 and charges_idx >= 0:
             interaction_idx = FEATURE_COLUMNS_INDICES["tenure_monthly_interaction"]
-            features[0, interaction_idx] = (
-                features[0, tenure_idx] * features[0, charges_idx]
-            )
+            features[0, interaction_idx] = features[0, tenure_idx] * features[0, charges_idx]
 
     if "charges_per_tenure" in FEATURE_COLUMNS_INDICES:
         tenure_idx = FEATURE_COLUMNS_INDICES.get("tenure", -1)
         total_charges_idx = FEATURE_COLUMNS_INDICES.get("TotalCharges", -1)
         if tenure_idx >= 0 and total_charges_idx >= 0:
             ratio_idx = FEATURE_COLUMNS_INDICES["charges_per_tenure"]
-            features[0, ratio_idx] = features[0, total_charges_idx] / (
-                features[0, tenure_idx] + 1
-            )
+            features[0, ratio_idx] = features[0, total_charges_idx] / (features[0, tenure_idx] + 1)
 
     # Scale features
     if MODEL_ARTIFACTS.get("scaler") is not None:
@@ -224,9 +214,7 @@ def get_risk_segment(probability: float) -> str:
         return "Low Risk"
 
 
-def get_recommended_action(
-    probability: float, contract: str, total_services: int = 3
-) -> str:
+def get_recommended_action(probability: float, contract: str, total_services: int = 3) -> str:
     """Generate recommended retention action."""
     if probability >= 0.7:
         if contract == "Month-to-month":
@@ -310,9 +298,7 @@ async def predict_churn(customer: CustomerFeatures):
         probability_np = MODEL_ARTIFACTS["model"].predict_proba(features)[0, 1]
         probability = float(probability_np)  # Convert numpy.float32 to Python float
 
-        threshold = float(
-            MODEL_ARTIFACTS["model_metrics"].get("optimal_threshold", 0.5)
-        )
+        threshold = float(MODEL_ARTIFACTS["model_metrics"].get("optimal_threshold", 0.5))
         prediction = "Yes" if probability >= threshold else "No"
 
         # Calculate confidence - ensure Python float
@@ -342,9 +328,7 @@ async def predict_churn(customer: CustomerFeatures):
         )
 
 
-@app.post(
-    "/predict/batch", response_model=BatchPredictionResponse, tags=["Predictions"]
-)
+@app.post("/predict/batch", response_model=BatchPredictionResponse, tags=["Predictions"])
 async def predict_batch(request: BatchPredictionRequest):
     """
     Predict churn for multiple customers.
@@ -377,9 +361,7 @@ async def predict_batch(request: BatchPredictionRequest):
             probability_np = MODEL_ARTIFACTS["model"].predict_proba(features)[0, 1]
             probability = float(probability_np)  # Convert numpy.float32 to Python float
 
-            threshold = float(
-                MODEL_ARTIFACTS["model_metrics"].get("optimal_threshold", 0.5)
-            )
+            threshold = float(MODEL_ARTIFACTS["model_metrics"].get("optimal_threshold", 0.5))
             prediction = "Yes" if probability >= threshold else "No"
 
             # Calculate metrics - ensure all are Python native types
@@ -394,9 +376,7 @@ async def predict_batch(request: BatchPredictionRequest):
             # Get recommendation if requested
             recommended_action = ""
             if request.include_recommendations:
-                recommended_action = get_recommended_action(
-                    probability, customer.Contract, 3
-                )
+                recommended_action = get_recommended_action(probability, customer.Contract, 3)
 
             predictions.append(
                 ChurnPredictionResponse(
@@ -459,15 +439,11 @@ async def get_model_metrics():
 
         return ModelMetricsResponse(
             model_version="1.0.0",
-            training_date=MODEL_ARTIFACTS["model_metrics"].get(
-                "training_date", "Unknown"
-            ),
+            training_date=MODEL_ARTIFACTS["model_metrics"].get("training_date", "Unknown"),
             performance_metrics={
                 "auc_roc": MODEL_ARTIFACTS["model_metrics"].get("auc", 0.0),
                 "accuracy": MODEL_ARTIFACTS["model_metrics"].get("accuracy", 0.0),
-                "optimal_threshold": MODEL_ARTIFACTS["model_metrics"].get(
-                    "optimal_threshold", 0.5
-                ),
+                "optimal_threshold": MODEL_ARTIFACTS["model_metrics"].get("optimal_threshold", 0.5),
             },
             feature_importance=feature_importance,
             data_statistics={
@@ -507,9 +483,7 @@ async def reload_model():
             FEATURE_COLUMNS_INDICES.clear()
             for i, col in enumerate(MODEL_ARTIFACTS["feature_columns"]):
                 FEATURE_COLUMNS_INDICES[col] = i
-            NUMPY_FEATURE_TEMPLATE = np.zeros(
-                (1, len(MODEL_ARTIFACTS["feature_columns"]))
-            )
+            NUMPY_FEATURE_TEMPLATE = np.zeros((1, len(MODEL_ARTIFACTS["feature_columns"])))
 
             logger.info("Model reloaded and re-optimized successfully")
             return {"message": "Model reloaded successfully", "status": "success"}
@@ -529,9 +503,7 @@ async def debug_status():
     return {
         "model_loaded": MODEL_ARTIFACTS is not None,
         "model_type": str(type(MODEL_ARTIFACTS["model"])) if MODEL_ARTIFACTS else None,
-        "feature_count": len(MODEL_ARTIFACTS["feature_columns"])
-        if MODEL_ARTIFACTS
-        else 0,
+        "feature_count": len(MODEL_ARTIFACTS["feature_columns"]) if MODEL_ARTIFACTS else 0,
         "cache_size": len(FEATURE_CACHE),
         "uptime_seconds": (datetime.now() - APP_START_TIME).total_seconds(),
     }
