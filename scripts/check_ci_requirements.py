@@ -13,26 +13,22 @@ from pathlib import Path
 def check_file_exists(filepath, required=True):
     """Check if a file exists and report status."""
     if os.path.exists(filepath):
-        print(f"✓ {filepath} exists")
+        print(f"[OK] {filepath} exists")
         return True
     else:
-        status = "✗" if required else "⚠"
-        print(
-            f"{status} {filepath} missing {'(required)' if required else '(optional)'}"
-        )
+        status = "[MISSING]" if required else "[WARN]"
+        print(f"{status} {filepath} missing {'(required)' if required else '(optional)'}")
         return False
 
 
 def check_directory_exists(dirpath, required=True):
     """Check if a directory exists and report status."""
     if os.path.exists(dirpath) and os.path.isdir(dirpath):
-        print(f"✓ {dirpath}/ exists")
+        print(f"[OK] {dirpath}/ exists")
         return True
     else:
-        status = "✗" if required else "⚠"
-        print(
-            f"{status} {dirpath}/ missing {'(required)' if required else '(optional)'}"
-        )
+        status = "[MISSING]" if required else "[WARN]"
+        print(f"{status} {dirpath}/ missing {'(required)' if required else '(optional)'}")
         return False
 
 
@@ -99,25 +95,25 @@ def main():
     try:
         import pytest
 
-        print("✓ pytest available")
+        print("[OK] pytest available")
     except ImportError:
-        print("✗ pytest not available")
+        print("[MISSING] pytest not available")
         issues.append("pytest not installed")
 
     try:
         import pandas
 
-        print("✓ pandas available")
+        print("[OK] pandas available")
     except ImportError:
-        print("✗ pandas not available")
+        print("[MISSING] pandas not available")
         issues.append("pandas not installed")
 
     try:
         import fastapi
 
-        print("✓ FastAPI available")
+        print("[OK] FastAPI available")
     except ImportError:
-        print("✗ FastAPI not available")
+        print("[MISSING] FastAPI not available")
         issues.append("FastAPI not installed")
 
     # Summary
@@ -126,10 +122,10 @@ def main():
     print("=" * 60)
 
     if not issues:
-        print("✓ All CI requirements met!")
+        print("[SUCCESS] All CI requirements met!")
         return 0
     else:
-        print(f"✗ Found {len(issues)} issues:")
+        print(f"[FAILED] Found {len(issues)} issues:")
         for issue in issues:
             print(f"  - {issue}")
         print("\nFix these issues before running CI/CD pipeline.")

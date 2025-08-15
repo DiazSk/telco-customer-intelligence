@@ -32,17 +32,17 @@ Pipeline Steps:
    ├── Handle missing values
    ├── Encode categorical variables
    └── Scale numerical features
-   
+
 2. Feature Engineering
    ├── Create interaction terms
    ├── Calculate ratios
    └── Generate behavioral indicators
-   
+
 3. Model Training
    ├── XGBoost with hyperparameter tuning
    ├── Cross-validation (5-fold)
    └── Early stopping
-   
+
 4. Model Validation
    ├── Test set evaluation
    ├── Feature importance analysis

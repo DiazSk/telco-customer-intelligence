@@ -176,9 +176,7 @@ class APITester:
             print("\nBatch Prediction Summary:")
             print(f"  - Total Customers: {result['summary']['total_customers']}")
             print(f"  - High Risk Count: {result['summary']['high_risk_count']}")
-            print(
-                f"  - Total Value at Risk: ${result['summary']['total_value_at_risk']:.2f}"
-            )
+            print(f"  - Total Value at Risk: ${result['summary']['total_value_at_risk']:.2f}")
             avg_prob = result["summary"]["average_churn_probability"]
             print(f"  - Average Churn Probability: {avg_prob:.2%}")
             print(f"  - Processing Time: {result['processing_time_seconds']} seconds")
@@ -349,7 +347,7 @@ class APITester:
         print(f"\nTotal: {passed}/{total} tests passed")
 
         if passed == total:
-            print("\n🎉 All tests passed successfully!")
+            print("\nAll tests passed successfully!")
         else:
             print(f"\n{total - passed} test(s) failed. Please review the output above.")
 

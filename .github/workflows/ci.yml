@@ -57,6 +57,12 @@ jobs:
         run: |
           python -m mypy src/ --ignore-missing-imports --allow-untyped-defs --no-strict-optional || echo "MyPy issues found but continuing"
 
+      - name: Run bandit (security static analysis, with Windows UTF-8 fix)
+        env:
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          python -m bandit -r src/ scripts/ tests/ || echo "Bandit issues found but continuing"
+
   # Testing
   test:
     runs-on: ubuntu-latest

@@ -45,7 +45,7 @@ python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --workers 4
 
 ### Host Binding Strategy
 
-- **Development (`127.0.0.1`)**: 
+- **Development (`127.0.0.1`)**:
   - ✅ Optimal Windows performance (no DNS lookup)
   - ✅ Secure (localhost only)
   - ❌ No external access

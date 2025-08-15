@@ -1,7 +1,3 @@
-# Pre-commit hooks for code quality
-# Install with: pre-commit install
-# Run manually: pre-commit run --all-files
-
 repos:
   # Python code formatting
   - repo: https://github.com/psf/black
@@ -76,7 +72,6 @@ repos:
       - id: markdownlint
         args: [--fix, --disable, MD013]
 
-# Configuration for specific tools
 default_language_version:
   python: python3
 

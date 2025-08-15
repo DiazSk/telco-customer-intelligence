@@ -125,9 +125,7 @@ class ChurnModelingPipeline:
 
         # Prepare features
         feature_cols = [
-            col
-            for col in df.columns
-            if col not in ["customerID", "Churn", "churn_binary"]
+            col for col in df.columns if col not in ["customerID", "Churn", "churn_binary"]
         ]
 
         # Handle categorical variables
@@ -265,9 +263,7 @@ class ChurnModelingPipeline:
 
         # Prepare features for prediction
         feature_cols = [
-            col
-            for col in df.columns
-            if col not in ["customerID", "Churn", "churn_binary"]
+            col for col in df.columns if col not in ["customerID", "Churn", "churn_binary"]
         ]
         df_model = pd.get_dummies(df[feature_cols], drop_first=True)
 
@@ -323,8 +319,7 @@ class ChurnModelingPipeline:
         )
 
         segment_summary["intervention_cost"] = (
-            segment_summary["customer_count"]
-            * self.business_params["retention_campaign_cost"]
+            segment_summary["customer_count"] * self.business_params["retention_campaign_cost"]
         )
 
         segment_summary["expected_roi"] = (
@@ -374,8 +369,7 @@ class ChurnModelingPipeline:
         - ROI: {:.1f}x
         """.format(
             best_model[1]["optimal_threshold"] * 100,
-            best_model[1]["customers_to_target"]
-            * self.business_params["retention_campaign_cost"],
+            best_model[1]["customers_to_target"] * self.business_params["retention_campaign_cost"],
             best_model[1]["expected_profit"],
             best_model[1]["expected_profit"]
             / (
@@ -427,7 +421,7 @@ def main():
     df_segmented.to_csv("data/processed/customer_segments.csv", index=False)
     segment_summary.to_csv("data/processed/segment_summary.csv")
 
-    print("\n✅ Modeling complete! Results saved to data/processed/")
+    print("\nModeling complete! Results saved to data/processed/")
 
     return pipeline, df_segmented, segment_summary
 
