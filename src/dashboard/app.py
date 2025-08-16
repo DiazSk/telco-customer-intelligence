@@ -300,17 +300,30 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### API Status")
-    try:
-        response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
-        if response.status_code == 200:
-            st.success("✅ API Online")
-        else:
-            st.warning("⚠️ API Issue")
-    except Exception:
-        st.error("❌ API Offline")
+    def check_api_status():
+        """Check API status with Streamlit Cloud awareness"""
+        try:
+            # Check if running on Streamlit Cloud
+            if "streamlit.app" in os.getenv("SERVER_ADDRESS", "") or os.getenv("STREAMLIT_CLOUD"):
+                return "cloud"
+            
+            # Try API connection (local development)
+            response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
+            return "online" if response.status_code == 200 else "issue"
+        except:
+            return "offline"
 
-    st.markdown("---")
-    st.markdown("### ⚡ Performance Settings")
+    api_status = check_api_status()
+
+    if api_status == "cloud":
+        st.info("📊 Streamlit Cloud Mode")
+        st.caption("API features available in full deployment")
+    elif api_status == "online":
+        st.success("✅ API Online")
+    elif api_status == "issue":
+        st.warning("⚠️ API Issue")
+    else:
+        st.error("❌ API Offline (Local Dev)")
 
     # Performance toggles
     st.session_state.user_preferences["auto_refresh"] = st.checkbox(
