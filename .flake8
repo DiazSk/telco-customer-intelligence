@@ -1,6 +1,6 @@
 [flake8]
 max-line-length = 88
-extend-ignore = E203,W503,E501,E231,E221,E222
+extend-ignore = E203,W503,E501,E231,E221,E222,W291
 exclude = 
     src/models/experimental/,
     venv/,
@@ -12,5 +12,6 @@ exclude =
     mlruns/,
     logs/
 per-file-ignores =
-    src/models/advanced_modeling*.py:E221,E222,E231
-    src/dashboard/*.py:E501
+    src/models/advanced_modeling*.py:E221,E222,E231,E501
+    src/dashboard/*.py:E501,E231
+    src/models/train_with_mlflow.py:E501,E231

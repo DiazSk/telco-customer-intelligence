@@ -174,12 +174,17 @@ class ChurnModelingPipeline:
             df_test = df.iloc[test_indices]
 
             # Calculate business-focused metrics
-            results[name] = self.calculate_business_metrics(y_test, y_pred_proba, X_test, df_test)
+            results[name] = self.calculate_business_metrics(
+                y_test, y_pred_proba, X_test, df_test
+            )
 
             # Add feature importance
             if hasattr(model, "feature_importances_"):
                 importance = (
-                    pd.DataFrame({"feature": X.columns, "importance": model.feature_importances_})
+                    pd.DataFrame({
+                        "feature": X.columns,
+                        "importance": model.feature_importances_
+                    })
                     .sort_values("importance", ascending=False)
                     .head(10)
                 )

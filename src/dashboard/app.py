@@ -1215,20 +1215,20 @@ elif page == "💰 ROI Calculator":
 
         with col1:
             st.metric(
-                "Expected Churners", f"{int(target_customers * avg_churn_prob):, }"
+                "Expected Churners", f"{int(target_customers * avg_churn_prob):,}"
             )
 
         with col2:
-            st.metric("Prevented Churns", f"{int(roi_results['prevented_churns']):, }")
+            st.metric("Prevented Churns", f"{int(roi_results['prevented_churn']):,}")
 
         with col3:
-            st.metric("Revenue Saved", f"${roi_results['revenue_saved']:, .0f}")
+            st.metric("Revenue Saved", f"${roi_results['revenue_saved']:,.0f}")
 
         with col4:
             roi_pct = roi_results["roi"] * 100
             st.metric(
                 "ROI",
-                f"{roi_pct: .1f}%",
+                f"{roi_pct:.1f}%",
                 delta=f"{'Profitable' if roi_pct > 0 else 'Loss'}",
             )
 
@@ -1252,7 +1252,7 @@ elif page == "💰 ROI Calculator":
                     x=categories,
                     y=values,
                     marker_color=colors,
-                    text=[f"${v:, .0f}" for v in values],
+                    text=[f"${v:,.0f}" for v in values],
                     textposition="auto",
                 )
             )
@@ -1394,25 +1394,25 @@ elif page == "🎯 Segmentation Analysis":
                 st.markdown("#### Segment Metrics")
                 for segment in segment_metrics.index:
                     with st.expander(
-                        f"{segment} ({segment_counts[segment]:, } customers)"
+                        f"{segment} ({segment_counts[segment]:,} customers)"
                     ):
                         col1, col2, col3 = st.columns(3)
                         with col1:
                             st.metric(
                                 "Avg Monthly",
                                 f"${segment_metrics.loc[segment,
-                                                        'MonthlyCharges']: .2f}",
+                                                        'MonthlyCharges']:.2f}",
                             )
                         with col2:
                             st.metric(
                                 "Avg Tenure",
-                                f"{segment_metrics.loc[segment, 'tenure']: .0f} mo",
+                                f"{segment_metrics.loc[segment, 'tenure']:.0f} mo",
                             )
                         with col3:
                             st.metric(
                                 "Total Revenue",
                                 f"${segment_metrics.loc[segment,
-                                                        'TotalCharges'] / 1000: .0f}K",
+                                                        'TotalCharges'] / 1000:.0f}K",
                             )
 
             # Detailed segment analysis
@@ -1634,7 +1634,7 @@ elif page == "⚙️ What-If Scenarios":
 
         with col1:
             current_mtm = len(df[df["Contract"] == "Month-to-month"])
-            st.metric("Current Month-to-Month", f"{current_mtm:, }")
+            st.metric("Current Month-to-Month", f"{current_mtm:,}")
 
             conversion_rate = st.slider(
                 "Expected Conversion Rate (%)",
@@ -1659,8 +1659,8 @@ elif page == "⚙️ What-If Scenarios":
             annual_churn = (df[df["Contract"] == "One year"]
                             ["Churn"] == "Yes").mean()
 
-            st.metric("M-t-M Churn Rate", f"{current_churn * 100: .1f}%")
-            st.metric("Annual Churn Rate", f"{annual_churn * 100: .1f}%")
+            st.metric("M-t-M Churn Rate", f"{current_churn * 100:.1f}%")
+            st.metric("Annual Churn Rate", f"{annual_churn * 100:.1f}%")
 
         if st.button("Run Simulation", key="contract_sim"):
             # Calculate impact
@@ -1681,18 +1681,18 @@ elif page == "⚙️ What-If Scenarios":
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
-                st.metric("Converted Customers", f"{converted_customers:, }")
+                st.metric("Converted Customers", f"{converted_customers:,}")
             with col2:
-                st.metric("Churn Prevented", f"{saved_customers:, }")
+                st.metric("Churn Prevented", f"{saved_customers:,}")
             with col3:
-                st.metric("Revenue Impact", f"${revenue_impact:, .0f}")
+                st.metric("Revenue Impact", f"${revenue_impact:,.0f}")
             with col4:
                 roi = (
                     (revenue_impact - (converted_customers * 50))
                     / (converted_customers * 50)
                     * 100
                 )
-                st.metric("Campaign ROI", f"{roi: .1f}%")
+                st.metric("Campaign ROI", f"{roi:.1f}%")
 
             # Visualization
             months = list(range(1, 13))
@@ -1775,12 +1775,12 @@ elif page == "⚙️ What-If Scenarios":
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
-                    st.metric("Customers Migrated", f"{migrated:, }")
+                    st.metric("Customers Migrated", f"{migrated:,}")
                 with col2:
-                    st.metric("Churn Prevented", f"{churn_prevented:, }")
+                    st.metric("Churn Prevented", f"{churn_prevented:,}")
                 with col3:
                     net_benefit = revenue_saved - total_cost
-                    st.metric("Net Benefit", f"${net_benefit:, .0f}")
+                    st.metric("Net Benefit", f"${net_benefit:,.0f}")
 
 elif page == "📈 Model Performance":
     st.title("📈 Model Performance Monitoring")
