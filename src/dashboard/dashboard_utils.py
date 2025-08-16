@@ -12,15 +12,12 @@ import plotly.graph_objects as go
 import streamlit as st
 
 # Color schemes
-
-
 RISK_COLORS = {
     "Low Risk": "#00cc00",
     "Medium Risk": "#ffa500",
     "High Risk": "#ff6b6b",
     "Critical": "#cc0000",
 }
-
 
 CHURN_COLORS = {"Yes": "#ff6b6b", "No": "#4ecdc4"}
 
@@ -313,8 +310,8 @@ def calculate_intervention_roi(
 
     return {
         "target_customers": num_customers,
-        "expected_churners": int(expected_churners),
-        "prevented_churns": int(prevented_churns),
+        "expected_churners": round(expected_churners),
+        "prevented_churns": round(prevented_churns),
         "total_cost": total_cost,
         "revenue_saved": revenue_saved,
         "net_benefit": net_benefit,
@@ -361,7 +358,8 @@ def simulate_campaign_impact(
 
         converted = int(target_size * conversion_rate)
         mtm_churn = (mtm_customers["Churn"] == "Yes").mean()
-        annual_churn = (df[df["Contract"] == "One year"]["Churn"] == "Yes").mean()
+        annual_contracts = df[df["Contract"] == "One year"]
+        annual_churn = (annual_contracts["Churn"] == "Yes").mean() if len(annual_contracts) > 0 else 0
 
         churn_prevented = int(converted * (mtm_churn - annual_churn))
         revenue_impact = churn_prevented * df["MonthlyCharges"].mean() * 12
@@ -369,8 +367,8 @@ def simulate_campaign_impact(
         results = {
             "target_size": target_size,
             "converted": converted,
-            "churn_prevented": churn_prevented,
-            "revenue_impact": revenue_impact,
+            "churn_prevented": max(0, churn_prevented),
+            "revenue_impact": max(0, revenue_impact),
         }
 
     elif campaign_type == "payment_migration":
@@ -381,9 +379,8 @@ def simulate_campaign_impact(
 
         migrated = int(target_size * migration_rate)
         ec_churn = (ec_customers["Churn"] == "Yes").mean()
-        auto_churn = (
-            df[df["PaymentMethod"].str.contains("automatic")]["Churn"] == "Yes"
-        ).mean()
+        auto_customers = df[df["PaymentMethod"].str.contains("automatic", na=False)]
+        auto_churn = (auto_customers["Churn"] == "Yes").mean() if len(auto_customers) > 0 else 0
 
         churn_prevented = int(migrated * (ec_churn - auto_churn))
         revenue_impact = churn_prevented * df["MonthlyCharges"].mean() * 12
@@ -391,8 +388,8 @@ def simulate_campaign_impact(
         results = {
             "target_size": target_size,
             "migrated": migrated,
-            "churn_prevented": churn_prevented,
-            "revenue_impact": revenue_impact,
+            "churn_prevented": max(0, churn_prevented),
+            "revenue_impact": max(0, revenue_impact),
         }
 
     return results
