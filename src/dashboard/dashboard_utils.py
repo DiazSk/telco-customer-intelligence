@@ -32,9 +32,9 @@ def format_currency(value: float) -> str:
         return f"${value:.0f}"
 
 
-def format_percentage(value: float) -> str:
+def format_percentage(value: float, decimal_places: int = 1) -> str:
     """Format value as percentage"""
-    return f"{value * 100:.1f}%"
+    return f"{value * 100:.{decimal_places}f}%"
 
 
 def create_gauge_chart(value: float, title: str = "Risk Level") -> go.Figure:
