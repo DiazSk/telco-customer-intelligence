@@ -208,18 +208,18 @@ jobs:
   #       # Example: kubectl apply -f deployment/kubernetes/production/
   #       # Or: docker-compose -f docker-compose.prod.yml up -d
 
-  notify:
-    needs: [deploy-staging, deploy-production]
-    runs-on: ubuntu-22.04
-    if: always()
+  # notify:
+  #   needs: [deploy-staging, deploy-production]
+  #   runs-on: ubuntu-22.04
+  #   if: always()
 
-    steps:
-    - name: Notify deployment status
-      run: |
-        if [ "${{ needs.deploy-staging.result }}" == "success" ] || [ "${{ needs.deploy-production.result }}" == "success" ]; then
-          echo "Deployment successful!"
-          # Add notification logic (Slack, email, etc.)
-        else
-          echo "Deployment failed!"
-          # Add failure notification logic
-        fi
+  #   steps:
+  #   - name: Notify deployment status
+  #     run: |
+  #       if [ "${{ needs.deploy-staging.result }}" == "success" ] || [ "${{ needs.deploy-production.result }}" == "success" ]; then
+  #         echo "Deployment successful!"
+  #         # Add notification logic (Slack, email, etc.)
+  #       else
+  #         echo "Deployment failed!"
+  #         # Add failure notification logic
+  #       fi
