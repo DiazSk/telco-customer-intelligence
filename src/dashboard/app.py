@@ -1181,7 +1181,7 @@ elif page == "💰 ROI Calculator":
             )
 
         with col2:
-            st.metric("Prevented Churns", f"{int(roi_results['prevented_churn']):,}")
+            st.metric("Prevented Churns", f"{int(roi_results['prevented_churns']):,}")
 
         with col3:
             st.metric("Revenue Saved", f"${roi_results['revenue_saved']:,.0f}")
