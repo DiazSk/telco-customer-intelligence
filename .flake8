@@ -1,0 +1,16 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203,W503,E501,E231,E221,E222
+exclude = 
+    src/models/experimental/,
+    venv/,
+    .venv/,
+    __pycache__/,
+    *.pyc,
+    .git/,
+    .pytest_cache/,
+    mlruns/,
+    logs/
+per-file-ignores =
+    src/models/advanced_modeling*.py:E221,E222,E231
+    src/dashboard/*.py:E501
