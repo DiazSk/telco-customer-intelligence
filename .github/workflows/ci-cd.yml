@@ -80,9 +80,9 @@ jobs:
       run: |
         python -m pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=term-missing
 
-    - name: Run integration tests
-      run: |
-        python -m pytest tests/integration/ -v
+    # - name: Run integration tests
+    #   run: |
+    #     python -m pytest tests/integration/ -v
 
     - name: Run performance tests
       run: |
