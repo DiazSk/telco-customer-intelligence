@@ -22,8 +22,8 @@ from fastapi.responses import JSONResponse
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # Local imports after path setup
-from src.api.schemas.models import BatchPredictionRequest
-from src.api.schemas.models import (
+from src.api.schemas.models import BatchPredictionRequest  # noqa: E402
+from src.api.schemas.models import (  # noqa: E402
     BatchPredictionResponse,
     ChurnPredictionResponse,
     CustomerFeatures,

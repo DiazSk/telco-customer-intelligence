@@ -4,27 +4,21 @@ Fixes the negative ROI issue with better feature engineering and business parame
 """
 
 import warnings
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
 import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from scipy import stats
-from sklearn.metrics import classification_report, precision_recall_curve, roc_auc_score
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 warnings.filterwarnings("ignore")
 
 # Try to import SHAP, but don't fail if not installed
-try:
-    import shap
-
-    SHAP_AVAILABLE = True
-except ImportError:
-    SHAP_AVAILABLE = False
-    print("SHAP not installed. Skipping interpretability analysis.")
+# SHAP conditionally imported in functions if needed
+SHAP_AVAILABLE = False
 
 
 class ChurnModelingPipeline:
@@ -69,12 +63,20 @@ class ChurnModelingPipeline:
         exclude_cols = ["customerID", "Churn", "churn_binary"]
 
         # Identify numeric and categorical columns
-        numeric_features = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
-        categorical_features = df.select_dtypes(include=["object", "category"]).columns.tolist()
+        numeric_features = df.select_dtypes(
+            include=["int64", "float64"]
+        ).columns.tolist()
+        categorical_features = df.select_dtypes(
+            include=["object", "category"]
+        ).columns.tolist()
 
         # Remove excluded columns
-        numeric_features = [col for col in numeric_features if col not in exclude_cols]
-        categorical_features = [col for col in categorical_features if col not in exclude_cols]
+        numeric_features = [
+            col for col in numeric_features if col not in exclude_cols
+        ]
+        categorical_features = [
+            col for col in categorical_features if col not in exclude_cols
+        ]
 
         # Create feature dataframe
         X = pd.DataFrame()
@@ -285,15 +287,15 @@ class ChurnModelingPipeline:
         ==========================================
 
         BUSINESS IMPACT:
-        - Expected Annual Savings: ${profit:,.0f}
-        - Customers to Target: {metrics['customers_to_target']:,}
-        - Expected Customers Saved: {metrics['expected_saves']:.0f}
-        - Model Accuracy (AUC): {metrics['auc_roc']:.1%}
+        - Expected Annual Savings: ${profit: ,.0f}
+        - Customers to Target: {metrics['customers_to_target']: ,}
+        - Expected Customers Saved: {metrics['expected_saves']: .0f}
+        - Model Accuracy (AUC): {metrics['auc_roc']: .1%}
 
         KEY INSIGHTS:
-        - Optimal intervention threshold: {metrics['optimal_threshold']:.1%} churn probability
-        - Precision at optimal threshold: {metrics['precision_at_optimal']:.1%}
-        - Recall at optimal threshold: {metrics['recall_at_optimal']:.1%}
+        - Optimal intervention threshold: {metrics['optimal_threshold']: .1%} churn probability
+        - Precision at optimal threshold: {metrics['precision_at_optimal']: .1%}
+        - Recall at optimal threshold: {metrics['recall_at_optimal']: .1%}
 
         TOP CHURN DRIVERS:
         """
@@ -311,15 +313,15 @@ class ChurnModelingPipeline:
         summary += f"""
 
         RECOMMENDED ACTIONS:
-        1. Focus retention efforts on customers with >{metrics['optimal_threshold']:.0%} churn probability
+        1. Focus retention efforts on customers with > {metrics['optimal_threshold']: .0%} churn probability
         2. Prioritize high-value customers (>$500 total charges)
         3. Use targeted email campaigns (cost-effective at $25/customer)
-        4. Monitor campaign success rate (currently {self.business_params['intervention_success_rate']:.0%})
+        4. Monitor campaign success rate (currently {self.business_params['intervention_success_rate']: .0%})
 
         ROI PROJECTION:
-        - Investment Required: ${investment:,.0f}
-        - Expected Return: ${profit:,.0f}
-        - ROI: {roi:.1f}x
+        - Investment Required: ${investment: ,.0f}
+        - Expected Return: ${profit: ,.0f}
+        - ROI: {roi: .1f}x
 
         VALIDATION METRICS:
         - Model tested on 30% holdout set ({int(len(self.results) * 0.3 * 7043/100)} customers)
@@ -349,7 +351,7 @@ def main():
         # Try parquet first (it's faster)
         df = pipeline.load_and_prep_data("data/features/feature_store.parquet")
         print("Loaded feature store (parquet)")
-    except:
+    except Exception:
         try:
             # Fall back to CSV
             df = pd.read_csv("data/processed/processed_telco_data.csv")
@@ -363,7 +365,7 @@ def main():
 
     # Train models
     print("Training models with business optimization...")
-    model_results = pipeline.train_models(df)
+    pipeline.train_models(df)
 
     # Generate executive summary
     print("\n" + "=" * 60)

@@ -4,18 +4,15 @@ Demonstrates DS skills: ML, Stats, Business Impact
 """
 
 import warnings
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional
 
 import lightgbm as lgb
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import shap
 import xgboost as xgb
 from scipy import stats
-from sklearn.metrics import precision_recall_curve, roc_auc_score
-from sklearn.model_selection import TimeSeriesSplit, train_test_split
+from sklearn.metrics import roc_auc_score
 from sklearn.preprocessing import StandardScaler
 
 warnings.filterwarnings("ignore")
@@ -400,11 +397,11 @@ def main():
 
     # Statistical analysis
     print("Running statistical analysis...")
-    stats_results = pipeline.statistical_analysis(df)
+    pipeline.statistical_analysis(df)
 
     # Train models
     print("Training models with business optimization...")
-    model_results = pipeline.train_models(df)
+    pipeline.train_models(df)
 
     # Create actionable segments
     print("Creating customer segments...")

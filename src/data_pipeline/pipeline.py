@@ -415,7 +415,7 @@ def main():
     ]
     new_features = [col for col in df_processed.columns if col not in original_cols]
     for feature in new_features:
-        print(f"  - {feature}")
+        print(f" - {feature}")
 
 
 if __name__ == "__main__":

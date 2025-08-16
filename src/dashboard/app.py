@@ -1394,7 +1394,8 @@ elif page == "🎯 Segmentation Analysis":
                         with col1:
                             st.metric(
                                 "Avg Monthly",
-                                f"${segment_metrics.loc[segment, 'MonthlyCharges']: .2f}",
+                                f"${segment_metrics.loc[segment,
+                                                        'MonthlyCharges']: .2f}",
                             )
                         with col2:
                             st.metric(
@@ -1404,7 +1405,8 @@ elif page == "🎯 Segmentation Analysis":
                         with col3:
                             st.metric(
                                 "Total Revenue",
-                                f"${segment_metrics.loc[segment, 'TotalCharges'] / 1000: .0f}K",
+                                f"${segment_metrics.loc[segment,
+                                                        'TotalCharges'] / 1000: .0f}K",
                             )
 
             # Detailed segment analysis
