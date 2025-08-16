@@ -79,12 +79,8 @@ class MLflowModelTrainer:
 
             # Log feature engineering metrics
             mlflow.log_param("num_features", feature_summary["total_features"])
-            mlflow.log_param(
-                "num_categorical",
-                feature_summary["categorical_features"])
-            mlflow.log_param(
-                "num_numerical",
-                feature_summary["numerical_features"])
+            mlflow.log_param("num_categorical", feature_summary["categorical_features"])
+            mlflow.log_param("num_numerical", feature_summary["numerical_features"])
 
             # Train XGBoost model (primary)
             print("🔧 Training XGBoost model...")
@@ -119,9 +115,7 @@ class MLflowModelTrainer:
             mlflow.set_tag("project", "telco_customer_intelligence")
             mlflow.set_tag("primary_model", "XGBoost")
 
-            print(
-                f"✅ Training complete! MLflow run: {
-                    mlflow.active_run().info.run_id}")
+            print(f"✅ Training complete! MLflow run: {mlflow.active_run().info.run_id}")
 
             return xgb_results, lgb_results, business_insights
 
@@ -182,10 +176,13 @@ class MLflowModelTrainer:
 
             # Data summary
             data_summary = {
-                "total_customers": len(df), "churn_rate": df["Churn"].value_counts(
-                    normalize=True).get(
-                    "Yes", 0) if "Churn" in df.columns else 0, "features": list(
-                    df.columns), "data_types": df.dtypes.to_dict(), }
+                "total_customers": len(df),
+                "churn_rate": df["Churn"].value_counts(normalize=True).get("Yes", 0)
+                if "Churn" in df.columns
+                else 0,
+                "features": list(df.columns),
+                "data_types": df.dtypes.to_dict(),
+            }
 
             import json
 
@@ -265,15 +262,12 @@ class MLflowModelTrainer:
         )
 
         df["Churn"] = np.where(
-            np.random.binomial(
-                1, churn_prob.clip(
-                    0, 1), n_samples), "Yes", "No")
+            np.random.binomial(1, churn_prob.clip(0, 1), n_samples), "Yes", "No"
+        )
 
         print(
-            f"✅ Created sample dataset: {
-                len(df)} records, churn rate: {
-                (
-                    df['Churn'] == 'Yes').mean(): .1%}")
+            f"✅ Created sample dataset: {len(df)} records, churn rate: {(df['Churn'] == 'Yes').mean():.1%}"
+        )
 
         return df
 
@@ -293,19 +287,11 @@ def main():
     print("🎉 Training Complete!")
     print("=" * 50)
     print(
-        f"🔍 XGBoost AUC: {
-            xgb_results.get(
-                'performance_metrics',
-                {}).get(
-                'roc_auc',
-                'N/A')}")
+        f"🔍 XGBoost AUC: {xgb_results.get('performance_metrics', {}).get('roc_auc', 'N/A')}"
+    )
     print(
-        f"🔍 LightGBM AUC: {
-            lgb_results.get(
-                'performance_metrics',
-                {}).get(
-                'roc_auc',
-                'N/A')}")
+        f"🔍 LightGBM AUC: {lgb_results.get('performance_metrics', {}).get('roc_auc', 'N/A')}"
+    )
     print(
         f"💰 Potential Annual Savings: ${business_insights.get('potential_annual_savings', 0):, .0f}"
     )

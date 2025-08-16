@@ -23,8 +23,8 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # Local imports after path setup
 from src.api.schemas.models import BatchPredictionRequest  # noqa: E402
-from src.api.schemas.models import (  # noqa: E402
-    BatchPredictionResponse,
+from src.api.schemas.models import (
+    BatchPredictionResponse,  # noqa: E402
     ChurnPredictionResponse,
     CustomerFeatures,
     HealthCheckResponse,

@@ -103,11 +103,9 @@ def load_data():
 
         # Verify essential columns exist
         required_columns = ["customerID", "Churn", "MonthlyCharges"]
-        missing_columns = [
-            col for col in required_columns if col not in df.columns]
+        missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            st.error(
-                f"Missing required columns in main data: {missing_columns}")
+            st.error(f"Missing required columns in main data: {missing_columns}")
             return pd.DataFrame()
 
         # Load segments data
@@ -121,7 +119,8 @@ def load_data():
         if segments_missing:
             st.warning(
                 f"Missing columns in segments data: {segments_missing}. "
-                "Proceeding without merge.")
+                "Proceeding without merge."
+            )
             return df
 
         # Merge segments with main data
@@ -155,9 +154,7 @@ def load_segment_summary():
         # Create dummy data if file doesn't exist
         return pd.DataFrame(
             {
-                "risk_segment": [
-                    "Low Risk", "Medium Risk", "High Risk", "Critical"
-                ],
+                "risk_segment": ["Low Risk", "Medium Risk", "High Risk", "Critical"],
                 "customer_count": [3200, 1900, 1600, 250],
                 "MonthlyCharges": [45.5, 65.2, 78.9, 89.5],
                 "churn_probability": [0.08, 0.35, 0.65, 0.85],
@@ -256,12 +253,7 @@ def call_api_prediction(customer_data):
         }
 
 
-def calculate_roi(
-        num_customers,
-        churn_prob,
-        intervention_cost,
-        success_rate,
-        clv):
+def calculate_roi(num_customers, churn_prob, intervention_cost, success_rate, clv):
     """Calculate ROI for retention campaign"""
     expected_churners = num_customers * churn_prob
     prevented_churns = expected_churners * success_rate
@@ -309,8 +301,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### API Status")
     try:
-        response = requests.get(
-            f"{st.session_state.api_url}/health", timeout=2)
+        response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
         if response.status_code == 200:
             st.success("✅ API Online")
         else:
@@ -343,10 +334,7 @@ with st.sidebar:
     # Cache management
     if st.button("🗑️ Clear Cache", help="Clear all cached data"):
         st.cache_data.clear()
-        for key in [
-            "advanced_analytics",
-            "feature_importance",
-                "model_predictions"]:
+        for key in ["advanced_analytics", "feature_importance", "model_predictions"]:
             if key in st.session_state:
                 del st.session_state[key]
         st.success("Cache cleared!")
@@ -354,8 +342,7 @@ with st.sidebar:
 # Main content based on selected page
 if page == "🏠 Executive Dashboard":
     st.title("🏠 Executive Dashboard")
-    st.markdown(
-        "### Real-time Business Intelligence for Telco Customer Retention")
+    st.markdown("### Real-time Business Intelligence for Telco Customer Retention")
 
     # Load data
     df = load_data()
@@ -372,9 +359,8 @@ if page == "🏠 Executive Dashboard":
     # Verify required columns exist
     if "Churn" not in df.columns:
         st.error(
-            f"⚠️ Missing 'Churn' column in data. Available columns: {
-                list(
-                    df.columns)}")
+            f"⚠️ Missing 'Churn' column in data. Available columns: {list(df.columns)}"
+        )
         st.stop()
 
     # Top metrics
@@ -444,9 +430,7 @@ if page == "🏠 Executive Dashboard":
                     "Critical": "#cc0000",
                 },
             )
-            fig_pie.update_traces(
-                textposition="inside",
-                textinfo="percent+label")
+            fig_pie.update_traces(textposition="inside", textinfo="percent+label")
             st.plotly_chart(fig_pie, use_container_width=True)
 
     with col2:
@@ -555,13 +539,10 @@ elif page == "🔮 Real-time Predictions":
     with tab1:
         df = load_data()
         if not df.empty:
-            customer_id = st.selectbox(
-                "Select Customer ID",
-                df["customerID"].tolist())
+            customer_id = st.selectbox("Select Customer ID", df["customerID"].tolist())
 
             if st.button("Get Prediction", key="existing"):
-                customer_data = df[df["customerID"]
-                                   == customer_id].iloc[0].to_dict()
+                customer_data = df[df["customerID"] == customer_id].iloc[0].to_dict()
 
                 with st.spinner("Analyzing customer..."):
                     time.sleep(0.5)  # Simulate processing
@@ -572,8 +553,7 @@ elif page == "🔮 Real-time Predictions":
 
                     with col1:
                         churn_prob = result.get("churn_probability", 0.5)
-                        st.metric("Churn Probability",
-                                  f"{churn_prob * 100: .1f}%")
+                        st.metric("Churn Probability", f"{churn_prob * 100: .1f}%")
 
                         # Gauge chart
                         fig_gauge = go.Figure(
@@ -603,14 +583,12 @@ elif page == "🔮 Real-time Predictions":
 
                     with col2:
                         st.metric(
-                            "Prediction", result.get(
-                                "churn_prediction", "Unknown"))
+                            "Prediction", result.get("churn_prediction", "Unknown")
+                        )
                         st.metric(
                             "Confidence", f"{result.get('confidence', 0) * 100: .1f}%"
                         )
-                        st.metric(
-                            "Risk Segment", result.get(
-                                "risk_segment", "Unknown"))
+                        st.metric("Risk Segment", result.get("risk_segment", "Unknown"))
 
                     with col3:
                         st.markdown("#### Recommended Actions")
@@ -652,15 +630,11 @@ elif page == "🔮 Real-time Predictions":
                 "Tenure (months)", min_value=0, max_value=72, value=12
             )
             monthly_charges = st.number_input(
-                "Monthly Charges ($)",
-                min_value=0.0,
-                max_value=200.0,
-                value=65.0)
+                "Monthly Charges ($)", min_value=0.0, max_value=200.0, value=65.0
+            )
             total_charges = st.number_input(
-                "Total Charges ($)",
-                min_value=0.0,
-                max_value=10000.0,
-                value=1000.0)
+                "Total Charges ($)", min_value=0.0, max_value=10000.0, value=1000.0
+            )
             contract = st.selectbox(
                 "Contract", ["Month-to-month", "One year", "Two year"]
             )
@@ -706,9 +680,7 @@ elif page == "🔮 Real-time Predictions":
                         f"{result.get('churn_probability', 0.5) * 100: .1f}%",
                     )
                 with col2:
-                    st.metric(
-                        "Risk Segment", result.get(
-                            "risk_segment", "Unknown"))
+                    st.metric("Risk Segment", result.get("risk_segment", "Unknown"))
 
 elif page == "📊 Customer Analytics":
     st.title("📊 Customer Analytics")
@@ -720,9 +692,8 @@ elif page == "📊 Customer Analytics":
     col1, col2, col3 = st.columns(3)
     with col1:
         contract_filter = st.multiselect(
-            "Contract Type",
-            df["Contract"].unique(),
-            default=df["Contract"].unique())
+            "Contract Type", df["Contract"].unique(), default=df["Contract"].unique()
+        )
     with col2:
         if "risk_segment" in df.columns:
             risk_filter = st.multiselect(
@@ -742,9 +713,7 @@ elif page == "📊 Customer Analytics":
         & (df["tenure"] <= tenure_range[1])
     ]
     if risk_filter and "risk_segment" in df.columns:
-        filtered_df = filtered_df[
-            filtered_df["risk_segment"].isin(risk_filter)
-        ]
+        filtered_df = filtered_df[filtered_df["risk_segment"].isin(risk_filter)]
 
     # Check if filtered data is empty
     if filtered_df.empty:
@@ -802,8 +771,7 @@ elif page == "📊 Customer Analytics":
             for service in services:
                 if service in filtered_df.columns:
                     yes_count = (filtered_df[service] == "Yes").sum()
-                    service_data.append(
-                        {"Service": service, "Count": yes_count})
+                    service_data.append({"Service": service, "Count": yes_count})
 
             if service_data:
                 service_df = pd.DataFrame(service_data)
@@ -1023,8 +991,8 @@ elif page == "📊 Customer Analytics":
 
         with col1:
             if st.button(
-                "🔍 Compute Advanced Correlations",
-                    help="Analyze feature correlations"):
+                "🔍 Compute Advanced Correlations", help="Analyze feature correlations"
+            ):
                 with st.spinner("Computing correlations..."):
                     if (
                         "advanced_analytics" not in st.session_state
@@ -1064,8 +1032,8 @@ elif page == "📊 Customer Analytics":
 
         with col2:
             if st.button(
-                "📊 Generate Feature Importance",
-                    help="Show model feature importance"):
+                "📊 Generate Feature Importance", help="Show model feature importance"
+            ):
                 with st.spinner("Loading feature importance..."):
                     if "feature_importance" not in st.session_state:
                         st.session_state.feature_importance = load_feature_importance()
@@ -1086,16 +1054,15 @@ elif page == "📊 Customer Analytics":
                     st.plotly_chart(fig_feat, use_container_width=True)
 
         # Advanced segmentation analysis (lazy loaded)
-        if st.button(
-            "🎯 Deep Segment Analysis",
-                help="Detailed segment performance"):
+        if st.button("🎯 Deep Segment Analysis", help="Detailed segment performance"):
             with st.spinner("Analyzing segments..."):
                 if (
                     "advanced_analytics" not in st.session_state
                     or st.session_state.advanced_analytics is None
                 ):
                     st.session_state.advanced_analytics = compute_advanced_analytics(
-                        filtered_df)
+                        filtered_df
+                    )
 
                 analytics = st.session_state.advanced_analytics
                 if analytics and "segment_analysis" in analytics:
@@ -1121,12 +1088,14 @@ elif page == "📊 Customer Analytics":
                     {
                         "cached_data_size": len(filtered_df),
                         "cache_status": {
-                            "advanced_analytics": st.session_state.advanced_analytics is not None,
-                            "feature_importance": "feature_importance" in st.session_state,
-                            "last_refresh": str(
-                                st.session_state.last_refresh),
+                            "advanced_analytics": st.session_state.advanced_analytics
+                            is not None,
+                            "feature_importance": "feature_importance"
+                            in st.session_state,
+                            "last_refresh": str(st.session_state.last_refresh),
                         },
-                    })
+                    }
+                )
 
 elif page == "💰 ROI Calculator":
     st.title("💰 Retention Campaign ROI Calculator")
@@ -1166,15 +1135,11 @@ elif page == "💰 ROI Calculator":
             target_customers = st.number_input(
                 "Number of Target Customers", 100, 5000, 500
             )
-            avg_churn_prob = st.slider(
-                "Average Churn Probability", 0.0, 1.0, 0.3)
+            avg_churn_prob = st.slider("Average Churn Probability", 0.0, 1.0, 0.3)
 
         intervention_cost = st.number_input(
-            "Cost per Intervention ($)",
-            min_value=10,
-            max_value=200,
-            value=25,
-            step=5)
+            "Cost per Intervention ($)", min_value=10, max_value=200, value=25, step=5
+        )
 
     with col2:
         st.markdown("##### Business Metrics")
@@ -1196,17 +1161,14 @@ elif page == "💰 ROI Calculator":
         )
 
         campaign_duration = st.selectbox(
-            "Campaign Duration", [
-                "1 Month", "3 Months", "6 Months", "12 Months"])
+            "Campaign Duration", ["1 Month", "3 Months", "6 Months", "12 Months"]
+        )
 
     # Calculate ROI
     if st.button("Calculate ROI", type="primary"):
         roi_results = calculate_roi(
-            target_customers,
-            avg_churn_prob,
-            intervention_cost,
-            success_rate,
-            clv)
+            target_customers, avg_churn_prob, intervention_cost, success_rate, clv
+        )
 
         st.markdown("---")
         st.markdown("### 📊 ROI Analysis Results")
@@ -1271,11 +1233,8 @@ elif page == "💰 ROI Calculator":
 
             for sr in success_rates:
                 roi_calc = calculate_roi(
-                    target_customers,
-                    avg_churn_prob,
-                    intervention_cost,
-                    sr,
-                    clv)
+                    target_customers, avg_churn_prob, intervention_cost, sr, clv
+                )
                 rois.append(roi_calc["roi"] * 100)
 
             fig_breakeven = go.Figure()
@@ -1290,10 +1249,8 @@ elif page == "💰 ROI Calculator":
             )
 
             fig_breakeven.add_hline(
-                y=0,
-                line_dash="dash",
-                line_color="red",
-                annotation_text="Break-even")
+                y=0, line_dash="dash", line_color="red", annotation_text="Break-even"
+            )
 
             fig_breakeven.add_vline(
                 x=success_rate * 100,
@@ -1349,8 +1306,8 @@ elif page == "🎯 Segmentation Analysis":
 
     # Segmentation method selection
     seg_method = st.selectbox(
-        "Segmentation Method", [
-            "Risk-Based", "Value-Based", "Behavioral", "Custom"])
+        "Segmentation Method", ["Risk-Based", "Value-Based", "Behavioral", "Custom"]
+    )
 
     if seg_method == "Risk-Based":
         if "risk_segment" in df.columns:
@@ -1373,8 +1330,7 @@ elif page == "🎯 Segmentation Analysis":
                         "Critical": "#cc0000",
                     },
                 )
-                fig_donut.update_traces(
-                    textposition="inside", textinfo="percent+label")
+                fig_donut.update_traces(textposition="inside", textinfo="percent+label")
                 st.plotly_chart(fig_donut, use_container_width=True)
 
             with col2:
@@ -1400,8 +1356,7 @@ elif page == "🎯 Segmentation Analysis":
                         with col1:
                             st.metric(
                                 "Avg Monthly",
-                                f"${segment_metrics.loc[segment,
-                                                        'MonthlyCharges']:.2f}",
+                                f"${segment_metrics.loc[segment, 'MonthlyCharges']:.2f}",
                             )
                         with col2:
                             st.metric(
@@ -1411,8 +1366,7 @@ elif page == "🎯 Segmentation Analysis":
                         with col3:
                             st.metric(
                                 "Total Revenue",
-                                f"${segment_metrics.loc[segment,
-                                                        'TotalCharges'] / 1000:.0f}K",
+                                f"${segment_metrics.loc[segment, 'TotalCharges'] / 1000:.0f}K",
                             )
 
             # Detailed segment analysis
@@ -1448,15 +1402,11 @@ elif page == "🎯 Segmentation Analysis":
 
             with col3:
                 # Service adoption
-                services = [
-                    "PhoneService",
-                    "InternetService",
-                    "OnlineSecurity"]
+                services = ["PhoneService", "InternetService", "OnlineSecurity"]
                 service_adoption = []
                 for service in services:
                     if service in segment_df.columns:
-                        adoption_rate = (
-                            segment_df[service] == "Yes").mean() * 100
+                        adoption_rate = (segment_df[service] == "Yes").mean() * 100
                         service_adoption.append(
                             {
                                 "Service": service.replace("Service", ""),
@@ -1497,11 +1447,7 @@ elif page == "🎯 Segmentation Analysis":
             )
             .round(2)
         )
-        value_analysis.columns = [
-            "Count",
-            "Churn Rate (%)",
-            "Avg Monthly",
-            "Avg Total"]
+        value_analysis.columns = ["Count", "Churn Rate (%)", "Avg Monthly", "Avg Total"]
 
         st.markdown("#### Value-Based Segmentation")
         st.dataframe(value_analysis, use_container_width=True)
@@ -1514,11 +1460,8 @@ elif page == "🎯 Segmentation Analysis":
         )
 
         fig_value.add_trace(
-            go.Bar(
-                x=value_analysis.index,
-                y=value_analysis["Count"]),
-            row=1,
-            col=1)
+            go.Bar(x=value_analysis.index, y=value_analysis["Count"]), row=1, col=1
+        )
 
         fig_value.add_trace(
             go.Scatter(
@@ -1645,19 +1588,15 @@ elif page == "⚙️ What-If Scenarios":
             )
 
             discount_offered = st.slider(
-                "Discount Offered (%)",
-                min_value=5,
-                max_value=30,
-                value=15,
-                step=5)
+                "Discount Offered (%)", min_value=5, max_value=30, value=15, step=5
+            )
 
         with col2:
             # Current metrics
             current_churn = (
                 df[df["Contract"] == "Month-to-month"]["Churn"] == "Yes"
             ).mean()
-            annual_churn = (df[df["Contract"] == "One year"]
-                            ["Churn"] == "Yes").mean()
+            annual_churn = (df[df["Contract"] == "One year"]["Churn"] == "Yes").mean()
 
             st.metric("M-t-M Churn Rate", f"{current_churn * 100:.1f}%")
             st.metric("Annual Churn Rate", f"{annual_churn * 100:.1f}%")
@@ -1665,14 +1604,14 @@ elif page == "⚙️ What-If Scenarios":
         if st.button("Run Simulation", key="contract_sim"):
             # Calculate impact
             converted_customers = int(current_mtm * conversion_rate / 100)
-            churn_reduction = (
-                current_churn - annual_churn) * converted_customers
+            churn_reduction = (current_churn - annual_churn) * converted_customers
 
             avg_monthly = df[df["Contract"] == "Month-to-month"][
                 "MonthlyCharges"
             ].mean()
-            revenue_impact = (converted_customers *
-                              avg_monthly * 12 * (1 - discount_offered / 100))
+            revenue_impact = (
+                converted_customers * avg_monthly * 12 * (1 - discount_offered / 100)
+            )
             saved_customers = int(churn_reduction)
 
             st.markdown("---")
@@ -1696,10 +1635,7 @@ elif page == "⚙️ What-If Scenarios":
 
             # Visualization
             months = list(range(1, 13))
-            cumulative_savings = [
-                saved_customers *
-                avg_monthly *
-                m for m in months]
+            cumulative_savings = [saved_customers * avg_monthly * m for m in months]
 
             fig_impact = go.Figure()
             fig_impact.add_trace(
@@ -1722,8 +1658,7 @@ elif page == "⚙️ What-If Scenarios":
     elif scenario == "Payment Method Migration":
         st.markdown("#### Simulate Payment Method Migration")
 
-        electronic_check_customers = len(
-            df[df["PaymentMethod"] == "Electronic check"])
+        electronic_check_customers = len(df[df["PaymentMethod"] == "Electronic check"])
         electronic_check_churn = (
             df[df["PaymentMethod"] == "Electronic check"]["Churn"] == "Yes"
         ).mean()
@@ -1735,8 +1670,7 @@ elif page == "⚙️ What-If Scenarios":
 
         with col1:
             st.metric("Electronic Check Users", f"{electronic_check_customers:, }")
-            st.metric("Their Churn Rate",
-                      f"{electronic_check_churn * 100: .1f}%")
+            st.metric("Their Churn Rate", f"{electronic_check_churn * 100: .1f}%")
 
             migration_rate = st.slider(
                 "Expected Migration Rate (%)",
@@ -1755,21 +1689,16 @@ elif page == "⚙️ What-If Scenarios":
             )
 
         with col2:
-            st.metric("Auto-Payment Churn Rate",
-                      f"{auto_payment_churn * 100: .1f}%")
+            st.metric("Auto-Payment Churn Rate", f"{auto_payment_churn * 100: .1f}%")
 
             if st.button("Run Simulation", key="payment_sim"):
-                migrated = int(
-                    electronic_check_customers *
-                    migration_rate /
-                    100)
+                migrated = int(electronic_check_customers * migration_rate / 100)
                 churn_prevented = int(
                     migrated * (electronic_check_churn - auto_payment_churn)
                 )
 
                 total_cost = migrated * incentive_cost
-                revenue_saved = churn_prevented * \
-                    df["MonthlyCharges"].mean() * 12
+                revenue_saved = churn_prevented * df["MonthlyCharges"].mean() * 12
 
                 st.markdown("---")
                 col1, col2, col3 = st.columns(3)
@@ -1883,11 +1812,12 @@ elif page == "📈 Model Performance":
 
     models_data = pd.DataFrame(
         {
-            "Model": [
-                "XGBoost", "LightGBM", "Random Forest", "Logistic Regression"], "AUC": [
-                0.84, 0.83, 0.79, 0.75], "Training Time (s)": [
-                    2.5, 1.8, 3.2, 0.5], "Inference Time (ms)": [
-                        0.9, 0.7, 1.2, 0.3], })
+            "Model": ["XGBoost", "LightGBM", "Random Forest", "Logistic Regression"],
+            "AUC": [0.84, 0.83, 0.79, 0.75],
+            "Training Time (s)": [2.5, 1.8, 3.2, 0.5],
+            "Inference Time (ms)": [0.9, 0.7, 1.2, 0.3],
+        }
+    )
 
     st.dataframe(models_data, use_container_width=True)
 
@@ -1915,20 +1845,16 @@ elif page == "📈 Model Performance":
             color_continuous_scale="RdYlGn_r",
         )
         fig_drift.add_hline(
-            y=0.1,
-            line_dash="dash",
-            line_color="red",
-            annotation_text="Drift Threshold")
+            y=0.1, line_dash="dash", line_color="red", annotation_text="Drift Threshold"
+        )
         st.plotly_chart(fig_drift, use_container_width=True)
 
     with col2:
         st.markdown("#### Drift Summary")
-        st.dataframe(
-            drift_metrics[["Feature", "Status"]], use_container_width=True)
+        st.dataframe(drift_metrics[["Feature", "Status"]], use_container_width=True)
 
         if any(drift_metrics["Drift Score"] > 0.1):
-            st.warning(
-                "⚠️ Some features showing drift. Consider model retraining.")
+            st.warning("⚠️ Some features showing drift. Consider model retraining.")
         else:
             st.success("✅ All features within acceptable drift limits.")
 
