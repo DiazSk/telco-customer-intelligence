@@ -70,7 +70,7 @@ jobs:
       run: |
         flake8 src/ --max-line-length=88 --extend-ignore=E203,W503
         black --check src/
-        isort --check-only src/
+        isort --check-only --profile black src/
 
     - name: Run type checking
       run: |
