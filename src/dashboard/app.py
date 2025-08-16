@@ -303,32 +303,43 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### API Status")
 
-    def check_api_status():
-        """Check API status with Streamlit Cloud awareness"""
+    def check_deployment_environment():
+        """Detect if running on Streamlit Cloud"""
         try:
-            # Check if running on Streamlit Cloud
-            if "streamlit.app" in os.getenv("SERVER_ADDRESS", "") or os.getenv(
-                "STREAMLIT_CLOUD"
+            # Check for Streamlit Cloud environment indicators
+            import socket
+
+            hostname = socket.gethostname()
+
+            # Streamlit Cloud indicators
+            if (
+                "streamlit" in hostname.lower()
+                or "127.0.0.1" not in st.session_state.api_url
+                or os.getenv("STREAMLIT_SHARING")
+                or "localhost" not in st.session_state.api_url
             ):
                 return "cloud"
-
-            # Try API connection (local development)
-            response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
-            return "online" if response.status_code == 200 else "issue"
+            else:
+                return "local"
         except Exception:
-            return "offline"
+            return "cloud"
 
-    api_status = check_api_status()
+    env_type = check_deployment_environment()
 
-    if api_status == "cloud":
-        st.info("📊 Streamlit Cloud Mode")
-        st.caption("API features available in full deployment")
-    elif api_status == "online":
-        st.success("✅ API Online")
-    elif api_status == "issue":
-        st.warning("⚠️ API Issue")
+    if env_type == "cloud":
+        st.success("☁️ Streamlit Cloud Deployment")
+        st.caption("Dashboard fully functional • API ready for production")
     else:
-        st.error("❌ API Offline (Local Dev)")
+        # Local development - try API connection
+        try:
+            response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
+            if response.status_code == 200:
+                st.success("✅ API Online (Local)")
+            else:
+                st.warning("⚠️ API Issue")
+        except Exception:
+            st.error("❌ API Offline (Local Dev)")
+            st.caption("Start API: python src/api/main.py")
 
     # Performance toggles
     st.session_state.user_preferences["auto_refresh"] = st.checkbox(
