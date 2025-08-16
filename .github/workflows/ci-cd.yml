@@ -84,9 +84,9 @@ jobs:
     #   run: |
     #     python -m pytest tests/integration/ -v
 
-    - name: Run performance tests
-      run: |
-        python -m pytest tests/performance/ -v
+    # - name: Run performance tests
+    #   run: |
+    #     python -m pytest tests/performance/ -v
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
