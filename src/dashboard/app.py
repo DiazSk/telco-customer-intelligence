@@ -120,7 +120,8 @@ def load_data():
         ]
         if segments_missing:
             st.warning(
-                f"Missing columns in segments data: {segments_missing}. Proceeding without merge.")
+                f"Missing columns in segments data: {segments_missing}. "
+                "Proceeding without merge.")
             return df
 
         # Merge segments with main data
@@ -155,11 +156,14 @@ def load_segment_summary():
         return pd.DataFrame(
             {
                 "risk_segment": [
-                    "Low Risk", "Medium Risk", "High Risk", "Critical"], "customer_count": [
-                    3200, 1900, 1600, 250], "MonthlyCharges": [
-                    45.5, 65.2, 78.9, 89.5], "churn_probability": [
-                        0.08, 0.35, 0.65, 0.85], "potential_revenue_loss": [
-                            5000, 15000, 45000, 35000], })
+                    "Low Risk", "Medium Risk", "High Risk", "Critical"
+                ],
+                "customer_count": [3200, 1900, 1600, 250],
+                "MonthlyCharges": [45.5, 65.2, 78.9, 89.5],
+                "churn_probability": [0.08, 0.35, 0.65, 0.85],
+                "potential_revenue_loss": [5000, 15000, 45000, 35000],
+            }
+        )
 
 
 # Advanced Performance Functions
@@ -738,13 +742,15 @@ elif page == "📊 Customer Analytics":
         & (df["tenure"] <= tenure_range[1])
     ]
     if risk_filter and "risk_segment" in df.columns:
-        filtered_df = filtered_df[filtered_df["risk_segment"].isin(
-            risk_filter)]
+        filtered_df = filtered_df[
+            filtered_df["risk_segment"].isin(risk_filter)
+        ]
 
     # Check if filtered data is empty
     if filtered_df.empty:
         st.warning(
-            "⚠️ No data matches the current filter criteria. Please adjust your filters."
+            "⚠️ No data matches the current filter criteria. Please adjust your "
+            "filters."
         )
         st.stop()
 
