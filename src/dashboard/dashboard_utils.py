@@ -436,4 +436,5 @@ def load_and_process_data(filepath: str) -> pd.DataFrame:
 @st.cache_data(ttl=300)
 def compute_expensive_metrics(df: pd.DataFrame) -> Dict:
     """Compute expensive metrics with caching"""
-    return calculate_business_metrics(df)
+    return calculate_business_metrics(df) 
+ 
