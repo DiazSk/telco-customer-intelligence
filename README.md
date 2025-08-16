@@ -220,63 +220,51 @@ python scripts/setup.py
 ### Quick Launch
 
 ```bash
-# Start all services with one command
-python launch_all.py
-
-# Or run individually:
 # 1. Run data pipeline
-python scripts/run_pipeline.py
+python src/data_pipeline/pipeline.py --config configs/pipeline_config.yaml
 
 # 2. Train models
-python src/models/train.py
+python src/models/advanced_modeling.py
 
-# 3. Start API
-python src/api/main.py
-
-# 4. Launch dashboard
+# 3. Start dashboard
 streamlit run src/dashboard/app.py
 ```
 
-Access points:
-- 📊 Dashboard: http://localhost:8501
-- 🔌 API: http://localhost:8000
-- 📚 API Docs: http://localhost:8000/docs
+Access point:
+- 📊 **Live Demo**: https://telco-customer-intelligence.streamlit.app
 
 ## 📁 Project Structure
 
 ```
 telco-customer-intelligence/
 ├── 📊 data/                     # Data storage
-│   ├── raw/                     # Original datasets
-│   ├── processed/                # Cleaned and transformed data
-│   └── features/                 # Feature store
+│   ├── raw/                     # Original datasets  
+│   ├── processed/               # Cleaned and transformed data
+│   └── features/                # Feature store
 ├── 🧠 src/                      # Source code
-│   ├── api/                     # FastAPI application
+│   ├── api/                     # FastAPI application (ready for deployment)
 │   │   ├── main.py              # API entry point
-│   │   ├── endpoints/           # API routes
-│   │   ├── schemas/             # API model
-│   │       └── models.py        # Pydantic schemas
+│   │   └── schemas/             # API models
 │   ├── dashboard/               # Streamlit application
 │   │   ├── app.py               # Dashboard entry point
+│   │   ├── dashboard_utils.py   # Utility functions
 │   │   └── pages/               # Dashboard pages
 │   ├── data_pipeline/           # ETL processes
 │   │   └── pipeline.py          # Main pipeline
 │   └── models/                  # ML models
-│       ├── train.py             # Training script
-│       └── predict.py           # Prediction logic
-├── 📝 notebooks/                # Jupyter notebooks
-│   ├── 01_eda.ipynb             # Exploratory analysis
-│   ├── 02_modeling.ipynb        # Model development
-│   └── 03_evaluation.ipynb      # Results analysis
+│       ├── advanced_modeling.py # Model training & evaluation
+│       └── train_with_mlflow.py # MLflow integration
+├── 📓 notebooks/                # Jupyter notebooks
+│   └── 01_eda.ipynb             # Exploratory data analysis
 ├── 🧪 tests/                    # Test suite
-│   ├── unit/                    # Unit tests
-│   └── integration/             # Integration tests
-├── 🚀 deployment/               # Deployment configs
-│   ├── docker/                  # Docker files
-│   └── kubernetes/              # K8s manifests
+│   └── unit/                    # Unit tests
 ├── 📚 docs/                     # Documentation
 ├── ⚙️ configs/                  # Configuration files
-└── 📜 scripts/                  # Utility scripts
+│   └── pipeline_config.yaml    # Pipeline settings
+├── 🔧 scripts/                  # Utility scripts
+│   ├── run_pipeline.py          # Pipeline runner
+│   └── run_sql_analytics.py     # SQL analysis
+└── 📄 requirements.txt          # Dependencies
 ```
 
 ## 🔄 Data Pipeline
@@ -325,23 +313,21 @@ python src/data_pipeline/pipeline.py --config configs/pipeline_config.yaml
 
 ### Training
 
-```bash
-# Train with default config
-python src/models/train.py
+### Training
 
-# Train with custom parameters
-python src/models/train.py \
-    --model xgboost \
-    --n-estimators 200 \
-    --max-depth 6 \
-    --learning-rate 0.05
+```bash
+# Train with advanced modeling pipeline
+python src/models/advanced_modeling.py
+
+# Train with MLflow tracking
+python src/models/train_with_mlflow.py
 ```
 
 ### Feature Importance (Top 10)
 
 ```
 1. Contract_Month-to-month     # 25% importance
-2. tenure                       # 20% importance
+2. tenure                      # 20% importance
 3. MonthlyCharges              # 15% importance
 4. PaymentMethod_Electronic    # 12% importance
 5. InternetService_Fiber       # 10% importance
@@ -484,22 +470,43 @@ GET /model/metrics
 ### Screenshots
 
 <div style="text-align: center;">
-<img src="docs/executive_dashboard.png" width="45%" alt="Executive Dashboard">
-<img src="docs/predictions_page.png" width="45%" alt="Predictions">
-<img src="docs/roi_calculator.png" width="45%" alt="ROI Calculator">
-<img src="docs/scenarios_page.png" width="45%" alt="What-If Scenarios">
+<img src="docs/screenshots/dashboard_preview.png" width="45%" alt="Executive Dashboard">
+<img src="docs/screenshots/predictions.png" width="45%" alt="Predictions">
+<img src="docs/screenshots/roi.png" width="45%" alt="ROI Calculator">
+<img src="docs/screenshots/whatif.png" width="45%" alt="What-If Scenarios">
 </div>
 
-## 🐳 Deployment
+## 🌐 Deployment
 
-### Docker
+### 🚀 Live Demo
+**[View Live Demo](https://telco-customer-intelligence.streamlit.app)** *(Deployed on Streamlit Cloud)*
+
+The platform is deployed on Streamlit Cloud, providing:
+- ✅ Interactive dashboard with real-time predictions
+- ✅ Customer risk segmentation and analysis  
+- ✅ Business impact visualization
+- ✅ ROI calculator for retention campaigns
+
+### 🐳 Docker (Full Stack)
+
+**Complete production environment with all services:**
 
 ```bash
-# Build and run with Docker Compose
+# Build and run all services
 docker-compose up --build
 
-# Or build individual services
-docker build -t telco-api -f Dockerfile.api .
+# Services included:
+# - FastAPI Backend (localhost:8000)
+# - Streamlit Dashboard (localhost:8501)  
+# - PostgreSQL Database (localhost:5432)
+# - Redis Cache (localhost:6379)
+# - MLflow Tracking (localhost:5000)
+```
+
+**Individual service deployment:**
+```bash
+# Build individual services
+docker build -t telco-api -f Dockerfile .
 docker build -t telco-dashboard -f Dockerfile.dashboard .
 
 # Run containers
@@ -507,42 +514,55 @@ docker run -p 8000:8000 telco-api
 docker run -p 8501:8501 telco-dashboard
 ```
 
-### Kubernetes
+### 💻 Local Development
 
+**Quick start for development:**
 ```bash
-# Deploy to Kubernetes
-kubectl apply -f deployment/kubernetes/
+# Install dependencies
+pip install -r requirements.txt
 
-# Check deployment status
-kubectl get pods -n telco-platform
+# Run data pipeline
+python src/data_pipeline/pipeline.py --config configs/pipeline_config.yaml
 
-# Access services
-kubectl port-forward service/telco-api 8000:8000
-kubectl port-forward service/telco-dashboard 8501:8501
+# Train models
+python src/models/advanced_modeling.py
+
+# Start services
+python src/api/main.py        # API at localhost:8000
+streamlit run src/dashboard/app.py  # Dashboard at localhost:8501
 ```
 
-### Cloud Deployment
+### ☁️ Cloud Deployment Options
 
-#### AWS
+**The platform is ready for deployment on:**
+
+| Platform | Use Case | Deployment Time | Cost |
+|----------|----------|-----------------|------|
+| **Streamlit Cloud** | Dashboard demo | 5 minutes | Free |
+| **Railway** | Full-stack app | 10 minutes | $5-20/month |
+| **AWS Lambda** | API endpoints | 15 minutes | Pay-per-use |
+| **Google Cloud Run** | Serverless deployment | 20 minutes | Pay-per-use |
+| **Azure Container Instances** | Enterprise deployment | 25 minutes | $50-200/month |
+| **Heroku** | Simple full-stack | 15 minutes | $25-50/month |
+
+### 🔧 Configuration
+
+**Environment setup:**
 ```bash
-# Deploy to AWS ECS
-ecs-cli up --cluster telco-cluster
-ecs-cli compose up
+# Copy environment template
+cp .env.example .env
+
+# Update with your values
+# - Database credentials
+# - API keys  
+# - Cloud storage settings
 ```
 
-#### Google Cloud
-```bash
-# Deploy to GCP Cloud Run
-gcloud run deploy telco-api --source .
-gcloud run deploy telco-dashboard --source .
-```
-
-#### Heroku
-```bash
-# Deploy to Heroku
-heroku create telco-intelligence
-git push heroku main
-```
+**For production deployment:**
+- Set `ENV=production` in environment variables
+- Use proper database (PostgreSQL) instead of SQLite
+- Enable monitoring and logging
+- Configure SSL certificates
 
 ## 🧪 Testing
 
@@ -550,10 +570,10 @@ git push heroku main
 
 ```bash
 # Run all tests
-pytest
+pytest tests/unit/ -v
 
 # Run with coverage
-pytest --cov=src tests/
+pytest tests/unit/ -v --cov=src --cov-report=term-missing
 
 # Run specific test suites
 pytest tests/unit/
