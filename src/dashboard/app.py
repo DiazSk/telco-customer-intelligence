@@ -290,13 +290,13 @@ with st.sidebar:
     st.markdown("### Quick Stats")
     df = load_data()
     if not df.empty and "Churn" in df.columns:
-        st.metric("Total Customers", f"{len(df): , }")
+        st.metric("Total Customers", f"{len(df):}")
         st.metric("Churn Rate", f"{(df['Churn'] == 'Yes').mean() * 100: .1f}%")
-        st.metric("Avg Monthly Revenue", f"${df['MonthlyCharges'].sum(): , .0f}")
+        st.metric("Avg Monthly Revenue", f"${df['MonthlyCharges'].sum():.0f}")
     elif not df.empty:
-        st.metric("Total Customers", f"{len(df): , }")
+        st.metric("Total Customers", f"{len(df):}")
         st.warning("⚠️ Churn data not available")
-        st.metric("Avg Monthly Revenue", f"${df['MonthlyCharges'].sum(): , .0f}")
+        st.metric("Avg Monthly Revenue", f"${df['MonthlyCharges'].sum():.0f}")
 
     st.markdown("---")
     st.markdown("### API Status")
@@ -370,8 +370,8 @@ if page == "🏠 Executive Dashboard":
         total_customers = len(df)
         st.metric(
             "Total Customers",
-            f"{total_customers: , }",
-            delta=f"+{int(total_customers * 0.02): , } this month",
+            f"{total_customers:}",
+            delta=f"+{int(total_customers * 0.02):} this month",
         )
 
     with col2:
@@ -387,8 +387,8 @@ if page == "🏠 Executive Dashboard":
         monthly_revenue = df["MonthlyCharges"].sum()
         st.metric(
             "Monthly Revenue",
-            f"${monthly_revenue: , .0f}",
-            delta=f"+${monthly_revenue * 0.05: , .0f}",
+            f"${monthly_revenue:.0f}",
+            delta=f"+${monthly_revenue * 0.05:.0f}",
         )
 
     with col4:
@@ -397,7 +397,7 @@ if page == "🏠 Executive Dashboard":
         )
         st.metric(
             "At-Risk Customers",
-            f"{at_risk: , }",
+            f"{at_risk:}",
             delta=f"{-50} vs last week",
             delta_color="inverse",
         )
@@ -406,7 +406,7 @@ if page == "🏠 Executive Dashboard":
         potential_savings = 487000  # From your model results
         st.metric(
             "Potential Savings",
-            f"${potential_savings: , .0f}",
+            f"${potential_savings:.0f}",
             delta="+12% with optimization",
         )
 
