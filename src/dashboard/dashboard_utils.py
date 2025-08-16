@@ -359,7 +359,11 @@ def simulate_campaign_impact(
         converted = int(target_size * conversion_rate)
         mtm_churn = (mtm_customers["Churn"] == "Yes").mean()
         annual_contracts = df[df["Contract"] == "One year"]
-        annual_churn = (annual_contracts["Churn"] == "Yes").mean() if len(annual_contracts) > 0 else 0
+        annual_churn = (
+            (annual_contracts["Churn"] == "Yes").mean()
+            if len(annual_contracts) > 0
+            else 0
+        )
 
         churn_prevented = int(converted * (mtm_churn - annual_churn))
         revenue_impact = churn_prevented * df["MonthlyCharges"].mean() * 12
@@ -380,7 +384,9 @@ def simulate_campaign_impact(
         migrated = int(target_size * migration_rate)
         ec_churn = (ec_customers["Churn"] == "Yes").mean()
         auto_customers = df[df["PaymentMethod"].str.contains("automatic", na=False)]
-        auto_churn = (auto_customers["Churn"] == "Yes").mean() if len(auto_customers) > 0 else 0
+        auto_churn = (
+            (auto_customers["Churn"] == "Yes").mean() if len(auto_customers) > 0 else 0
+        )
 
         churn_prevented = int(migrated * (ec_churn - auto_churn))
         revenue_impact = churn_prevented * df["MonthlyCharges"].mean() * 12
