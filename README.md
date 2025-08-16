@@ -687,7 +687,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Dataset: [IBM Sample Data Sets](https://www.ibm.com/communities/analytics/watson-analytics-blog/guide-to-sample-datasets/)
+- Dataset: [Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
 - Inspired by production ML systems at leading tech companies
 - Built with best practices from [Google's ML Guide](https://developers.google.com/machine-learning/guides)
 
