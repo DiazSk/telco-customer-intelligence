@@ -330,6 +330,7 @@ async def predict_churn(customer: CustomerFeatures):
         monthly_value_at_risk = float(customer.MonthlyCharges * probability)
 
         return ChurnPredictionResponse(
+            customer_id="SINGLE_PREDICTION",
             churn_probability=probability,
             churn_prediction=prediction,
             risk_segment=risk_segment,
