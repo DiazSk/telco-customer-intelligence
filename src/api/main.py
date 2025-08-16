@@ -27,13 +27,9 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # Local imports after path setup
 from src.api.schemas.models import BatchPredictionRequest  # noqa: E402
-from src.api.schemas.models import (
-    BatchPredictionResponse,
-    ChurnPredictionResponse,
-    CustomerFeatures,
-    HealthCheckResponse,
-    ModelMetricsResponse,
-)
+from src.api.schemas.models import (BatchPredictionResponse,
+                                    ChurnPredictionResponse, CustomerFeatures,
+                                    HealthCheckResponse, ModelMetricsResponse)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
