@@ -28,11 +28,11 @@ CHURN_COLORS = {"Yes": "#ff6b6b", "No": "#4ecdc4"}
 def format_currency(value: float) -> str:
     """Format value as currency"""
     if value >= 1_000_000:
-        return f"${value / 1_000_000: .1f}M"
+        return f"${value / 1_000_000:.1f}M"
     elif value >= 1_000:
-        return f"${value / 1_000: .1f}K"
+        return f"${value / 1_000:.1f}K"
     else:
-        return f"${value: .0f}"
+        return f"${value:.0f}"
 
 
 def format_percentage(value: float, decimals: int = 1) -> str:
