@@ -88,6 +88,19 @@ services:
     depends_on:
       - api
 
+  # MLflow Tracking Server (using file-based storage for simplicity)
+  mlflow:
+    build: .
+    command: mlflow server --backend-store-uri file:///app/mlruns --default-artifact-root /app/mlruns --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./src:/app/src
+    environment:
+      - BACKEND_STORE_URI=file:///app/mlruns
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:

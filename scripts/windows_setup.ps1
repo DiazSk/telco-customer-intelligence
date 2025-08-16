@@ -59,7 +59,7 @@ function Format-Code {
 function Build-Images {
     Write-Host "Building Docker images..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose build
+        docker compose -f docker-compose.dev.yml build
     } else {
         Write-Host "Docker not found. Please install Docker Desktop." -ForegroundColor Red
         Write-Host "Download from: https://www.docker.com/products/docker-desktop/" -ForegroundColor Yellow
@@ -69,7 +69,7 @@ function Build-Images {
 function Start-Environment {
     Write-Host "Starting development environment..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose up -d
+        docker compose -f docker-compose.dev.yml up -d
         Write-Host ""
         Write-Host "Services starting up..." -ForegroundColor Yellow
         Write-Host "API: http://localhost:8000" -ForegroundColor Cyan
@@ -84,7 +84,7 @@ function Start-Environment {
 function Stop-Environment {
     Write-Host "Stopping development environment..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose down
+        docker compose -f docker-compose.dev.yml down
     } else {
         Write-Host "Docker not found." -ForegroundColor Red
     }
@@ -93,7 +93,7 @@ function Stop-Environment {
 function Show-Logs {
     Write-Host "Showing container logs..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose logs -f
+        docker compose -f docker-compose.dev.yml logs -f
     } else {
         Write-Host "Docker not found." -ForegroundColor Red
     }
@@ -102,7 +102,7 @@ function Show-Logs {
 function Restart-Containers {
     Write-Host "Restarting all containers..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose restart
+        docker compose -f docker-compose.dev.yml restart
     } else {
         Write-Host "Docker not found." -ForegroundColor Red
     }
@@ -111,7 +111,7 @@ function Restart-Containers {
 function Check-Health {
     Write-Host "Checking container health..." -ForegroundColor Green
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker compose ps
+        docker compose -f docker-compose.dev.yml ps
         Write-Host ""
         Write-Host "Checking service health..." -ForegroundColor Yellow
         
