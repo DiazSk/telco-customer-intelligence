@@ -527,9 +527,9 @@ async def debug_status():
     return {
         "model_loaded": MODEL_ARTIFACTS is not None,
         "model_type": str(type(MODEL_ARTIFACTS["model"])) if MODEL_ARTIFACTS else None,
-        "feature_count": len(MODEL_ARTIFACTS["feature_columns"])
-        if MODEL_ARTIFACTS
-        else 0,
+        "feature_count": (
+            len(MODEL_ARTIFACTS["feature_columns"]) if MODEL_ARTIFACTS else 0
+        ),
         "cache_size": len(FEATURE_CACHE),
         "uptime_seconds": (datetime.now() - APP_START_TIME).total_seconds(),
     }
