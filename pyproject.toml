@@ -1,9 +1,0 @@
-cat > pyproject.toml << 'EOF'
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-
-[tool.black]
-line-length = 88
-EOF
