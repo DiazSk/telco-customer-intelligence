@@ -4,7 +4,6 @@ Separates sensitive and non-sensitive configuration
 """
 
 import os
-from pathlib import Path
 from typing import Any, Dict
 
 import yaml
