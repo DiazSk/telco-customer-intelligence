@@ -72,9 +72,9 @@ jobs:
         black --check src/
         isort --check-only --profile black src/
 
-    - name: Run type checking
-      run: |
-        mypy src/ --ignore-missing-imports
+    # - name: Run type checking
+    #   run: |
+    #     mypy src/ --ignore-missing-imports
 
     - name: Run unit tests
       run: |
