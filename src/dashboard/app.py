@@ -172,17 +172,19 @@ def compute_advanced_analytics(df, segment_type="risk"):
 
     analytics = {
         "correlation_matrix": df.select_dtypes(include=[np.number]).corr(),
-        "segment_analysis": df.groupby("risk_segment")
-        .agg(
-            {
-                "MonthlyCharges": ["mean", "std"],
-                "tenure": ["mean", "std"],
-                "Churn": lambda x: (x == "Yes").mean(),
-            }
-        )
-        .round(3)
-        if "risk_segment" in df.columns
-        else {},
+        "segment_analysis": (
+            df.groupby("risk_segment")
+            .agg(
+                {
+                    "MonthlyCharges": ["mean", "std"],
+                    "tenure": ["mean", "std"],
+                    "Churn": lambda x: (x == "Yes").mean(),
+                }
+            )
+            .round(3)
+            if "risk_segment" in df.columns
+            else {}
+        ),
         "feature_importance": {
             "Contract": 0.23,
             "tenure": 0.19,
@@ -300,17 +302,20 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### API Status")
+
     def check_api_status():
         """Check API status with Streamlit Cloud awareness"""
         try:
             # Check if running on Streamlit Cloud
-            if "streamlit.app" in os.getenv("SERVER_ADDRESS", "") or os.getenv("STREAMLIT_CLOUD"):
+            if "streamlit.app" in os.getenv("SERVER_ADDRESS", "") or os.getenv(
+                "STREAMLIT_CLOUD"
+            ):
                 return "cloud"
-            
+
             # Try API connection (local development)
             response = requests.get(f"{st.session_state.api_url}/health", timeout=2)
             return "online" if response.status_code == 200 else "issue"
-        except:
+        except Exception:
             return "offline"
 
     api_status = check_api_status()
@@ -1508,11 +1513,11 @@ elif page == "🎯 Segmentation Analysis":
         ].apply(lambda x: sum(x == "Yes"), axis=1)
 
         df["behavioral_segment"] = df.apply(
-            lambda x: "Power User"
-            if x["service_intensity"] >= 6
-            else "Regular User"
-            if x["service_intensity"] >= 3
-            else "Light User",
+            lambda x: (
+                "Power User"
+                if x["service_intensity"] >= 6
+                else "Regular User" if x["service_intensity"] >= 3 else "Light User"
+            ),
             axis=1,
         )
 
