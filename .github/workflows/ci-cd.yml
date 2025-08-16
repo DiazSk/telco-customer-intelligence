@@ -128,85 +128,85 @@ jobs:
           bandit-report.json
           safety-report.json
 
-  build-and-push:
-    needs: [test, security]
-    runs-on: ubuntu-22.04
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+  # build-and-push:
+  #   needs: [test, security]
+  #   runs-on: ubuntu-22.04
+  #   if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
 
-    strategy:
-      matrix:
-        service: [api, dashboard]
+  #   strategy:
+  #     matrix:
+  #       service: [api, dashboard]
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+  #   - name: Set up Docker Buildx
+  #     uses: docker/setup-buildx-action@v3
 
-    - name: Log in to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+  #   - name: Log in to Container Registry
+  #     uses: docker/login-action@v3
+  #     with:
+  #       registry: ${{ env.REGISTRY }}
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha,prefix={{branch}}-
-          type=raw,value=latest,enable={{is_default_branch}}
+  #   - name: Extract metadata
+  #     id: meta
+  #     uses: docker/metadata-action@v5
+  #     with:
+  #       images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
+  #       tags: |
+  #         type=ref,event=branch
+  #         type=ref,event=pr
+  #         type=sha,prefix={{branch}}-
+  #         type=raw,value=latest,enable={{is_default_branch}}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        dockerfile: ${{ matrix.service == 'dashboard' && 'Dockerfile.dashboard' || 'Dockerfile' }}
-        platforms: linux/amd64,linux/arm64
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+  #   - name: Build and push Docker image
+  #     uses: docker/build-push-action@v5
+  #     with:
+  #       context: .
+  #       dockerfile: ${{ matrix.service == 'dashboard' && 'Dockerfile.dashboard' || 'Dockerfile' }}
+  #       platforms: linux/amd64,linux/arm64
+  #       push: true
+  #       tags: ${{ steps.meta.outputs.tags }}
+  #       labels: ${{ steps.meta.outputs.labels }}
+  #       cache-from: type=gha
+  #       cache-to: type=gha,mode=max
 
-  deploy-staging:
-    needs: build-and-push
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/develop'
-    environment: staging
+  # deploy-staging:
+  #   needs: build-and-push
+  #   runs-on: ubuntu-22.04
+  #   if: github.ref == 'refs/heads/develop'
+  #   environment: staging
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
 
-    - name: Deploy to staging
-      run: |
-        echo "Deploying to staging environment..."
-        # Add your staging deployment logic here
-        # Example: kubectl apply -f deployment/kubernetes/staging/
-        # Or: docker-compose -f docker-compose.staging.yml up -d
+  #   - name: Deploy to staging
+  #     run: |
+  #       echo "Deploying to staging environment..."
+  #       # Add your staging deployment logic here
+  #       # Example: kubectl apply -f deployment/kubernetes/staging/
+  #       # Or: docker-compose -f docker-compose.staging.yml up -d
 
-  deploy-production:
-    needs: build-and-push
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main'
-    environment: production
+  # deploy-production:
+  #   needs: build-and-push
+  #   runs-on: ubuntu-22.04
+  #   if: github.ref == 'refs/heads/main'
+  #   environment: production
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
 
-    - name: Deploy to production
-      run: |
-        echo "Deploying to production environment..."
-        # Add your production deployment logic here
-        # Example: kubectl apply -f deployment/kubernetes/production/
-        # Or: docker-compose -f docker-compose.prod.yml up -d
+  #   - name: Deploy to production
+  #     run: |
+  #       echo "Deploying to production environment..."
+  #       # Add your production deployment logic here
+  #       # Example: kubectl apply -f deployment/kubernetes/production/
+  #       # Or: docker-compose -f docker-compose.prod.yml up -d
 
   notify:
     needs: [deploy-staging, deploy-production]
