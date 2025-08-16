@@ -4,27 +4,21 @@ Fixes the negative ROI issue with better feature engineering and business parame
 """
 
 import warnings
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
 import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from scipy import stats
-from sklearn.metrics import classification_report, precision_recall_curve, roc_auc_score
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 warnings.filterwarnings("ignore")
 
 # Try to import SHAP, but don't fail if not installed
-try:
-    import shap
-
-    SHAP_AVAILABLE = True
-except ImportError:
-    SHAP_AVAILABLE = False
-    print("SHAP not installed. Skipping interpretability analysis.")
+# Remove unused SHAP import - conditionally imported in functions if needed
+SHAP_AVAILABLE = False
 
 
 class ChurnModelingPipeline:
@@ -69,12 +63,18 @@ class ChurnModelingPipeline:
         exclude_cols = ["customerID", "Churn", "churn_binary"]
 
         # Identify numeric and categorical columns
-        numeric_features = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
-        categorical_features = df.select_dtypes(include=["object", "category"]).columns.tolist()
+        numeric_features = df.select_dtypes(
+            include=["int64", "float64"]
+        ).columns.tolist()
+        categorical_features = df.select_dtypes(
+            include=["object", "category"]
+        ).columns.tolist()
 
         # Remove excluded columns
         numeric_features = [col for col in numeric_features if col not in exclude_cols]
-        categorical_features = [col for col in categorical_features if col not in exclude_cols]
+        categorical_features = [
+            col for col in categorical_features if col not in exclude_cols
+        ]
 
         # Create feature dataframe
         X = pd.DataFrame()
@@ -105,7 +105,9 @@ class ChurnModelingPipeline:
 
         # Add value-based features
         if "TotalCharges" in X.columns and "MonthlyCharges" in X.columns:
-            X["value_consistency"] = X["TotalCharges"] / (X["MonthlyCharges"] * (X["tenure"] + 1))
+            X["value_consistency"] = X["TotalCharges"] / (
+                X["MonthlyCharges"] * (X["tenure"] + 1)
+            )
             X["spending_acceleration"] = X["MonthlyCharges"] / (
                 X["TotalCharges"] / (X["tenure"] + 1) + 0.01
             )
@@ -187,12 +189,16 @@ class ChurnModelingPipeline:
             df_test = df.iloc[test_indices]
 
             # Calculate business-focused metrics
-            results[name] = self.calculate_business_metrics(y_test, y_pred_proba, X_test, df_test)
+            results[name] = self.calculate_business_metrics(
+                y_test, y_pred_proba, X_test, df_test
+            )
 
             # Add feature importance
             if hasattr(model, "feature_importances_"):
                 importance = (
-                    pd.DataFrame({"feature": X.columns, "importance": model.feature_importances_})
+                    pd.DataFrame(
+                        {"feature": X.columns, "importance": model.feature_importances_}
+                    )
                     .sort_values("importance", ascending=False)
                     .head(10)
                 )
@@ -233,7 +239,9 @@ class ChurnModelingPipeline:
                 continue
 
             # Value of correctly identified churners (enhanced calculation)
-            high_value_mask = customer_values >= self.business_params["min_clv_threshold"]
+            high_value_mask = (
+                customer_values >= self.business_params["min_clv_threshold"]
+            )
             tp_high_value = tp_mask & high_value_mask
 
             # Enhanced value calculation with multiplier for target results
@@ -246,7 +254,8 @@ class ChurnModelingPipeline:
             # Cost of interventions (only count high-value interventions)
             high_value_interventions = (tp_mask | fp_mask) & high_value_mask
             intervention_cost = (
-                high_value_interventions.sum() * self.business_params["retention_campaign_cost"]
+                high_value_interventions.sum()
+                * self.business_params["retention_campaign_cost"]
             )
 
             # Lost value from missed churners (minimal penalty)
@@ -347,7 +356,9 @@ class ChurnModelingPipeline:
                 summary += f"\n        {i}. {feature['feature']}"
 
         # Calculate ROI
-        investment = customers_targeted * self.business_params["retention_campaign_cost"]
+        investment = (
+            customers_targeted * self.business_params["retention_campaign_cost"]
+        )
         roi = profit / investment if investment > 0 else 0
 
         summary += f"""
@@ -391,7 +402,7 @@ def main():
         # Try parquet first (it's faster)
         df = pipeline.load_and_prep_data("data/features/feature_store.parquet")
         print("Loaded feature store (parquet)")
-    except:
+    except Exception:
         try:
             # Fall back to CSV
             df = pd.read_csv("data/processed/processed_telco_data.csv")
@@ -400,12 +411,14 @@ def main():
             print("Loaded processed data (CSV)")
         except Exception as e:
             print(f"Error loading data: {e}")
-            print("Please run the data pipeline first: python src/data_pipeline/pipeline.py")
+            print(
+                "Please run the data pipeline first: python src/data_pipeline/pipeline.py"
+            )
             return
 
     # Train models
     print("Training models with business optimization...")
-    model_results = pipeline.train_models(df)
+    pipeline.train_models(df)
 
     # Generate executive summary
     print("\n" + "=" * 60)

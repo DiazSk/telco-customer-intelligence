@@ -28,32 +28,41 @@ PREDICTIONS_REFRESH = 60  # 1 minute
 
 # Color Schemes
 RISK_COLORS = {
-    'Low Risk': '#00cc00',
-    'Medium Risk': '#ffa500',
-    'High Risk': '#ff6b6b',
-    'Critical': '#cc0000'
+    "Low Risk": "#00cc00",
+    "Medium Risk": "#ffa500",
+    "High Risk": "#ff6b6b",
+    "Critical": "#cc0000",
 }
 
 CHART_COLORS = {
-    'primary': '#3498db',
-    'success': '#2ecc71',
-    'warning': '#f39c12',
-    'danger': '#e74c3c',
-    'info': '#3498db'
+    "primary": "#3498db",
+    "success": "#2ecc71",
+    "warning": "#f39c12",
+    "danger": "#e74c3c",
+    "info": "#3498db",
 }
 
 # Feature Lists
 CATEGORICAL_FEATURES = [
-    'gender', 'SeniorCitizen', 'Partner', 'Dependents',
-    'PhoneService', 'MultipleLines', 'InternetService',
-    'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
-    'TechSupport', 'StreamingTV', 'StreamingMovies',
-    'Contract', 'PaperlessBilling', 'PaymentMethod'
+    "gender",
+    "SeniorCitizen",
+    "Partner",
+    "Dependents",
+    "PhoneService",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaperlessBilling",
+    "PaymentMethod",
 ]
 
-NUMERIC_FEATURES = [
-    'tenure', 'MonthlyCharges', 'TotalCharges'
-]
+NUMERIC_FEATURES = ["tenure", "MonthlyCharges", "TotalCharges"]
 
 # Dashboard Pages
 PAGES = {
@@ -63,5 +72,5 @@ PAGES = {
     "💰 ROI Calculator": "roi",
     "🎯 Segmentation": "segmentation",
     "⚙️ What-If Scenarios": "scenarios",
-    "📈 Model Performance": "performance"
+    "📈 Model Performance": "performance",
 }

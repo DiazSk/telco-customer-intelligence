@@ -178,7 +178,8 @@ class ChurnPredictionResponse(BaseModel):
                 "risk_segment": "High Risk",
                 "confidence": 0.85,
                 "monthly_value_at_risk": 70.35,
-                "recommended_action": "Immediate: Offer 50% discount for 1-year contract upgrade",
+                "recommended_action": "Immediate: Offer 50% discount for 1-year "
+                "contract upgrade",
             }
         }
 

@@ -12,7 +12,7 @@
 
 [**Live Demo**](#) | [**API Docs**](#-api-documentation) | [**Dashboard**](#-dashboard) | [**Documentation**](#-project-structure)
 
-<img src="docs/dashboard_preview.png" alt="Dashboard Preview" width="800">
+<img src="docs/screenshots/dashboard_preview.png" alt="Dashboard Preview" width="800">
 
 </div>
 
@@ -265,9 +265,9 @@ telco-customer-intelligence/
 │       ├── train.py             # Training script
 │       └── predict.py           # Prediction logic
 ├── 📝 notebooks/                # Jupyter notebooks
-│   ├── 01_eda.ipynb            # Exploratory analysis
-│   ├── 02_modeling.ipynb       # Model development
-│   └── 03_evaluation.ipynb     # Results analysis
+│   ├── 01_eda.ipynb             # Exploratory analysis
+│   ├── 02_modeling.ipynb        # Model development
+│   └── 03_evaluation.ipynb      # Results analysis
 ├── 🧪 tests/                    # Test suite
 │   ├── unit/                    # Unit tests
 │   └── integration/             # Integration tests
