@@ -207,7 +207,8 @@ cd telco-customer-intelligence
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  
+# On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -253,7 +254,8 @@ telco-customer-intelligence/
 │   ├── api/                     # FastAPI application
 │   │   ├── main.py              # API entry point
 │   │   ├── endpoints/           # API routes
-│   │   └── models.py            # Pydantic schemas
+│   │   ├── schemas/             # API model
+│   │       └── models.py        # Pydantic schemas
 │   ├── dashboard/               # Streamlit application
 │   │   ├── app.py               # Dashboard entry point
 │   │   └── pages/               # Dashboard pages
