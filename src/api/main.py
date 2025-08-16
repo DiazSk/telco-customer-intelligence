@@ -14,6 +14,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
+import joblib
+import numpy as np
+import pandas as pd
+import uvicorn
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -23,13 +27,9 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 # Local imports after path setup
 from src.api.schemas.models import BatchPredictionRequest  # noqa: E402
-from src.api.schemas.models import (
-    BatchPredictionResponse,  # noqa: E402
-    ChurnPredictionResponse,
-    CustomerFeatures,
-    HealthCheckResponse,
-    ModelMetricsResponse,
-)
+from src.api.schemas.models import (BatchPredictionResponse,
+                                    ChurnPredictionResponse, CustomerFeatures,
+                                    HealthCheckResponse, ModelMetricsResponse)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -53,9 +53,6 @@ async def lifespan(app: FastAPI):
     logger.info("Starting Telco Churn Prediction API...")
 
     try:
-        import joblib
-        import numpy as np
-
         model_path = "models/saved/churn_model_artifacts.pkl"
         if os.path.exists(model_path):
             logger.info(f"Loading model from {model_path}...")
@@ -128,8 +125,6 @@ app.add_middleware(
 
 def convert_numpy_types(obj):
     """Convert numpy types to Python native types for JSON serialization."""
-    import numpy as np
-
     if isinstance(obj, np.integer):
         return int(obj)
     elif isinstance(obj, np.floating):
@@ -416,8 +411,6 @@ async def predict_batch(request: BatchPredictionRequest):
             )
 
         # Calculate summary statistics - all as Python native types
-        import numpy as np  # Import only when needed
-
         avg_churn_prob = float(np.mean([p.churn_probability for p in predictions]))
         processing_time = float(time.time() - start_time)
 
@@ -457,8 +450,6 @@ async def get_model_metrics():
         # Load feature importance if available
         feature_importance = []
         if os.path.exists("models/saved/feature_importance.csv"):
-            import pandas as pd
-
             fi_df = pd.read_csv("models/saved/feature_importance.csv")
             feature_importance = fi_df.head(10).to_dict("records")
 
@@ -500,9 +491,6 @@ async def reload_model():
     global MODEL_ARTIFACTS
 
     try:
-        import joblib
-        import numpy as np
-
         model_path = "models/saved/churn_model_artifacts.pkl"
         if os.path.exists(model_path):
             MODEL_ARTIFACTS = joblib.load(model_path)
@@ -579,8 +567,6 @@ async def value_error_handler(request: Request, exc: ValueError):
 # ============================================================================
 
 if __name__ == "__main__":
-    import uvicorn
-
     # Environment-based configuration for production safety
     host = os.getenv("API_HOST", "127.0.0.1")  # Default localhost for dev
     port = int(os.getenv("API_PORT", "8000"))
