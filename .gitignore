@@ -157,3 +157,4 @@ ehthumbs.db
 # Pre-commit cache
 .pre-commit-config.yaml.backup
 tatus
+.env
