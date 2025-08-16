@@ -487,6 +487,19 @@ The platform is deployed on Streamlit Cloud, providing:
 - ✅ Business impact visualization
 - ✅ ROI calculator for retention campaigns
 
+### 🔐 Security Setup
+
+**REQUIRED**: Create `.env` file before running Docker:
+
+```bash
+# Copy template and update passwords
+cp .env.example .env
+
+# Edit .env with secure passwords:
+DB_PASSWORD=your_secure_password_here
+SECRET_KEY=your_super_secret_key_here
+```
+
 ### 🐳 Docker (Full Stack)
 
 **Complete production environment with all services:**
