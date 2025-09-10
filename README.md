@@ -657,6 +657,14 @@ Priority 3: Contract Conversion Campaign
 - Potential churn reduction: 73%
 ```
 
+## ⚠️ Assumptions and Limitations
+
+- Model trained on historical telco data; performance may vary with new data
+- Intervention success rates based on industry benchmarks (10-30%)
+- Requires monthly retraining to handle data drift
+- Dashboard hosted on free tier; performance may vary under load
+- Risk scoring methodology applicable to other domains with appropriate data
+
 ## 🚀 Future Enhancements
 
 ### Planned Features
