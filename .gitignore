@@ -48,6 +48,12 @@ coverage.xml
 # Environments
 .env
 .env.local
+[.bmad-core/]
+.bmad-core/*
+.bmad-core/**
+[.github/chatmodes/]
+.github/chatmodes/*
+.github/chatmodes/**
 .env.*.local
 .env.production
 .venv
