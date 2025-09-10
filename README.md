@@ -10,7 +10,7 @@
 
 <h3>An end-to-end machine learning solution that predicts customer churn with 84% accuracy and identifies $920K in at-risk revenue for targeted retention strategies</h3>
 
-[**Live Demo**](#) | [**API Docs**](#-api-documentation) | [**Dashboard**](#-dashboard) | [**Documentation**](#-project-structure)
+[**Live Demo**](https://telco-customer-intelligence.streamlit.app) | [**API Docs**](#-api-documentation) | [**Dashboard**](#-dashboard) | [**Documentation**](#-project-structure)
 
 <img src="docs/screenshots/dashboard_preview.png" alt="Dashboard Preview" width="800">
 
