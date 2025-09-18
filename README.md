@@ -664,6 +664,9 @@ Priority 3: Contract Conversion Campaign
 - Requires monthly retraining to handle data drift
 - Dashboard hosted on free tier; performance may vary under load
 - Risk scoring methodology applicable to other domains with appropriate data
+- Savings calculated assuming 25% intervention success rate
+- - Based on average customer value of $65/month
+- ROI projections based on similar industry implementations
 
 ## 🚀 Future Enhancements
 
